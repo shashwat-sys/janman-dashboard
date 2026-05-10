@@ -21,7 +21,7 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-    /* ── Header ── */
+    /* ââ Header ââ */
     header {
       background: var(--green);
       color: #fff;
@@ -49,7 +49,7 @@
     }
     .hdr-btn:hover { background: rgba(255,255,255,0.25); }
 
-    /* ── Tabs ── */
+    /* ââ Tabs ââ */
     .tabs {
       background: #fff;
       border-bottom: 2px solid var(--border);
@@ -69,10 +69,10 @@
     .tab.active { color: var(--green); border-bottom-color: var(--green); }
     .tab:hover:not(.active) { color: var(--text); }
 
-    /* ── Container ── */
+    /* ââ Container ââ */
     .container { padding: 1.25rem 1.5rem; max-width: 1200px; margin: 0 auto; }
 
-    /* ── Summary Cards ── */
+    /* ââ Summary Cards ââ */
     .cards {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -94,7 +94,7 @@
     .card .c-value  { font-size: 1.45rem; font-weight: 800; }
     .card .c-sub    { font-size: 0.72rem; color: var(--muted); margin-top: 0.2rem; }
 
-    /* ── Budget Table ── */
+    /* ââ Budget Table ââ */
     .panel {
       background: var(--card);
       border-radius: 10px;
@@ -128,7 +128,7 @@
     tr.total-row td { font-weight: 700; background: #f9fafb; }
     .num { text-align: right; font-variant-numeric: tabular-nums; }
 
-    /* ── Progress bar ── */
+    /* ââ Progress bar ââ */
     .bar-wrap { min-width: 130px; }
     .bar-track {
       height: 8px;
@@ -158,7 +158,7 @@
     }
     .bar-pct { font-size: 0.7rem; color: var(--muted); margin-top: 3px; }
 
-    /* ── Chips ── */
+    /* ââ Chips ââ */
     .chip {
       display: inline-block;
       padding: 0.15rem 0.55rem;
@@ -171,7 +171,7 @@
     .chip-red    { background: #fee2e2; color: #991b1b; }
     .chip-gray   { background: #f3f4f6; color: #6b7280; }
 
-    /* ── Transactions ── */
+    /* ââ Transactions ââ */
     .txn-row {
       display: flex;
       align-items: flex-start;
@@ -187,7 +187,7 @@
     .txn-badge { font-size: 0.7rem; background: #f3f4f6; color: #374151; padding: 0.1rem 0.45rem; border-radius: 4px; }
     .txn-amt { font-size: 0.9rem; font-weight: 700; color: var(--red); white-space: nowrap; }
 
-    /* ── FAB ── */
+    /* ââ FAB ââ */
     .fab {
       position: fixed;
       bottom: 1.75rem;
@@ -209,7 +209,7 @@
     }
     .fab:hover { background: var(--green-light); }
 
-    /* ── Modal ── */
+    /* ââ Modal ââ */
     .overlay {
       position: fixed;
       inset: 0;
@@ -249,7 +249,7 @@
     .btn-submit:hover { background: var(--green-light); }
     .submit-status { font-size: 0.82rem; margin-top: 0.5rem; min-height: 1.2em; }
 
-    /* ── Loading / error ── */
+    /* ââ Loading / error ââ */
     .loading { text-align: center; padding: 3rem 1rem; color: var(--muted); font-size: 0.9rem; }
     .err-banner { background: #fee2e2; border: 1px solid #fca5a5; color: #991b1b; padding: 0.75rem 1rem; border-radius: 8px; font-size: 0.82rem; margin-bottom: 1rem; }
 
@@ -262,28 +262,28 @@
 </head>
 <body>
 
-<!-- ── HEADER ── -->
+<!-- ââ HEADER ââ -->
 <header>
   <div>
     <div class="brand">Janman People's Foundation</div>
-    <h1>Finance Dashboard — Jan Nyay Abhiyan &amp; DLF</h1>
+    <h1>Finance Dashboard â Jan Nyay Abhiyan &amp; DLF</h1>
   </div>
   <div class="hdr-right">
     <span class="hdr-ts" id="lastUpdated"></span>
-    <button class="hdr-btn" onclick="loadData()">↻ Refresh</button>
+    <button class="hdr-btn" onclick="loadData()">â» Refresh</button>
     <button class="hdr-btn" onclick="openModal()">+ Add Expense</button>
   </div>
 </header>
 
-<!-- ── TABS ── -->
+<!-- ââ TABS ââ -->
 <div class="tabs">
   <div class="tab active" id="tab-jna" onclick="switchTab('jna')">Jan Nyay Abhiyan</div>
   <div class="tab" id="tab-dlf" onclick="switchTab('dlf')">District Legal Fellowship</div>
 </div>
 
-<!-- ── MAIN ── -->
+<!-- ââ MAIN ââ -->
 <div class="container">
-  <div id="loadingState" class="loading">Loading from Google Sheets…</div>
+  <div id="loadingState" class="loading">Loading from Google Sheetsâ¦</div>
   <div id="errorBanner" class="err-banner" style="display:none;"></div>
 
   <div id="dashboard" style="display:none;">
@@ -291,22 +291,22 @@
     <div class="cards">
       <div class="card c-budget">
         <div class="c-label">Total Budget</div>
-        <div class="c-value" id="cBudget">—</div>
-        <div class="c-sub" id="cPeriod">—</div>
+        <div class="c-value" id="cBudget">â</div>
+        <div class="c-sub" id="cPeriod">â</div>
       </div>
       <div class="card c-spent">
         <div class="c-label">Total Spent</div>
-        <div class="c-value" id="cSpent">—</div>
-        <div class="c-sub" id="cSpentSub">—</div>
+        <div class="c-value" id="cSpent">â</div>
+        <div class="c-sub" id="cSpentSub">â</div>
       </div>
       <div class="card c-balance">
         <div class="c-label">Balance Remaining</div>
-        <div class="c-value" id="cBalance">—</div>
-        <div class="c-sub" id="cBalSub">—</div>
+        <div class="c-value" id="cBalance">â</div>
+        <div class="c-sub" id="cBalSub">â</div>
       </div>
       <div class="card c-pct">
         <div class="c-label">Budget Utilised</div>
-        <div class="c-value" id="cPct">—</div>
+        <div class="c-value" id="cPct">â</div>
         <div class="c-sub">90% = funder target</div>
       </div>
     </div>
@@ -315,15 +315,15 @@
     <div class="panel">
       <div class="panel-header">
         <span class="panel-title">Budget vs. Actual by Expense Head</span>
-        <span class="panel-hint">🔴 marker = 90% spending target (funder expectation)</span>
+        <span class="panel-hint">ð´ marker = 90% spending target (funder expectation)</span>
       </div>
       <table>
         <thead>
           <tr>
             <th>Expense Head</th>
-            <th class="num">Budget (₹)</th>
-            <th class="num">Spent (₹)</th>
-            <th class="num">Balance (₹)</th>
+            <th class="num">Budget (â¹)</th>
+            <th class="num">Spent (â¹)</th>
+            <th class="num">Balance (â¹)</th>
             <th>Progress</th>
             <th>Status</th>
           </tr>
@@ -346,7 +346,7 @@
 <!-- FAB -->
 <button class="fab" onclick="openModal()" title="Add Expense">+</button>
 
-<!-- ── ADD EXPENSE MODAL ── -->
+<!-- ââ ADD EXPENSE MODAL ââ -->
 <div class="overlay" id="overlay">
   <div class="modal">
     <h2>Add New Expense</h2>
@@ -356,7 +356,7 @@
         <input type="date" id="fDate" />
       </div>
       <div class="fg">
-        <label>Amount (₹)</label>
+        <label>Amount (â¹)</label>
         <input type="number" id="fAmount" placeholder="0" min="0" />
       </div>
     </div>
@@ -398,17 +398,17 @@
 </div>
 
 <script>
-// ╔══════════════════════════════════════════════════════════╗
-// ║  CONFIGURATION — update APPS_SCRIPT_URL after deploy    ║
-// ╚══════════════════════════════════════════════════════════╝
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbySPIe3CHzPg2HVB0yz6VToWfMmo8kPVkvkbIO_s4WF0T-5DXCeJaCFl2zEoN8I0Os/exec';
+// ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// â  CONFIGURATION â update APPS_SCRIPT_URL after deploy    â
+// ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbylXVOOYVNKmLD6UfQiDLHCtB1NZgqJkLwOn3WIlTsXXmJcMgWxdDjgHGrWD0Yycafq/exec';
 const SHEET_ID        = '12xfuCqcdNQupjBXsvF8ssg0mmxIp-qepP3mR2MgmugI';
 
-// Budget figures — edit here to match approved grant budgets
+// Budget figures â edit here to match approved grant budgets
 const BUDGETS = {
   'Jan Nyay Abhiyan': {
     label:  'Jan Nyay Abhiyan (All years)',
-    period: 'Y1: Jul 2024–Jun 2025 · Y2: Jul 2025–Jun 2026',
+    period: 'Y1: Jul 2024âJun 2025 Â· Y2: Jul 2025âJun 2026',
     total:  5998000,
     heads: {
       'Salary/Honrarium':        { budget: 2513400, label: 'Salary & Honorarium (Program)' },
@@ -421,7 +421,7 @@ const BUDGETS = {
   },
   'District Legal Fellowship': {
     label:  'District Legal Fellowship (Y1)',
-    period: 'Y1: Mar 2025 – Mar 2026',
+    period: 'Y1: Mar 2025 â Mar 2026',
     total:  2998000,
     heads: {
       'Salary/Honrarium':        { budget: 2436000, label: 'Salary & Honorarium' },
@@ -433,11 +433,11 @@ const BUDGETS = {
   }
 };
 
-// ── State ─────────────────────────────────────────────────
+// ââ State âââââââââââââââââââââââââââââââââââââââââââââââââ
 let allExpenses = [];
 let activeProject = 'Jan Nyay Abhiyan';
 
-// ── Tab switching ─────────────────────────────────────────
+// ââ Tab switching âââââââââââââââââââââââââââââââââââââââââ
 function switchTab(tab) {
   activeProject = tab === 'jna' ? 'Jan Nyay Abhiyan' : 'District Legal Fellowship';
   document.getElementById('tab-jna').classList.toggle('active', tab === 'jna');
@@ -446,7 +446,7 @@ function switchTab(tab) {
   if (allExpenses.length) renderDashboard();
 }
 
-// ── Data loading ──────────────────────────────────────────
+// ââ Data loading ââââââââââââââââââââââââââââââââââââââââââ
 async function loadData() {
   document.getElementById('loadingState').style.display = 'block';
   document.getElementById('dashboard').style.display   = 'none';
@@ -457,11 +457,11 @@ async function loadData() {
     if (APPS_SCRIPT_URL && APPS_SCRIPT_URL !== 'https://script.google.com/macros/s/AKfycbySPIe3CHzPg2HVB0yz6VToWfMmo8kPVkvkbIO_s4WF0T-5DXCeJaCFl2zEoN8I0Os/exec') {
       const res  = await fetch(APPS_SCRIPT_URL);
       const json = await res.json();
-      if (json.status !== 'success') throw new Error(json.message);
-      data = json.data;
+      if (!json.success) throw new Error(json.error || 'Backend returned failure');
+      data = json.transactions;
     } else {
       // Fallback: CSV export (sheet must be "Anyone with link can view")
-      const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=1066410601`;
+      const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&sheet=Sheet%201`;
       const res  = await fetch(url);
       const text = await res.text();
       data = parseCSV(text);
@@ -469,7 +469,7 @@ async function loadData() {
 
     allExpenses = data;
     document.getElementById('lastUpdated').textContent =
-      'Live · updated ' + new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+      'Live Â· updated ' + new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
     renderDashboard();
     document.getElementById('loadingState').style.display = 'none';
     document.getElementById('dashboard').style.display   = 'block';
@@ -478,7 +478,7 @@ async function loadData() {
     document.getElementById('errorBanner').textContent =
       'Could not load data: ' + err.message +
       (APPS_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbySPIe3CHzPg2HVB0yz6VToWfMmo8kPVkvkbIO_s4WF0T-5DXCeJaCFl2zEoN8I0Os/exec'
-        ? ' — Please deploy the Apps Script and update APPS_SCRIPT_URL in this file.'
+        ? ' â Please deploy the Apps Script and update APPS_SCRIPT_URL in this file.'
         : '');
     document.getElementById('errorBanner').style.display = 'block';
     allExpenses = [];
@@ -487,11 +487,11 @@ async function loadData() {
   }
 }
 
-// ── CSV parser ────────────────────────────────────────────
+// ââ CSV parser ââââââââââââââââââââââââââââââââââââââââââââ
 function parseCSV(text) {
   const lines = text.split('\n').filter(l => l.trim());
   const rows = [];
-  for (let i = 2; i < lines.length; i++) {
+  for (let i = 3; i < lines.length; i++) {  // rows 0-2 are title/metadata/header
     const cols = splitLine(lines[i]);
     const amt  = parseFloat((cols[3] || '').replace(/[^0-9.]/g, ''));
     const head = (cols[5] || '').trim();
@@ -519,7 +519,7 @@ function splitLine(line) {
   return r;
 }
 
-// ── Normalize project name (handle trailing spaces) ───────
+// ââ Normalize project name (handle trailing spaces) âââââââ
 function normalizeProject(p) {
   const s = (p || '').trim().toLowerCase();
   if (s.includes('district legal')) return 'District Legal Fellowship';
@@ -527,7 +527,7 @@ function normalizeProject(p) {
   return p.trim();
 }
 
-// ── Render ────────────────────────────────────────────────
+// ââ Render ââââââââââââââââââââââââââââââââââââââââââââââââ
 function renderDashboard() {
   const cfg = BUDGETS[activeProject];
 
@@ -544,12 +544,12 @@ function renderDashboard() {
   const balance     = totalBudget - totalSpent;
   const pctUsed     = totalBudget > 0 ? (totalSpent / totalBudget * 100) : 0;
 
-  el('cBudget').textContent  = '₹' + fmt(totalBudget);
+  el('cBudget').textContent  = 'â¹' + fmt(totalBudget);
   el('cPeriod').textContent  = cfg.period;
-  el('cSpent').textContent   = '₹' + fmt(totalSpent);
+  el('cSpent').textContent   = 'â¹' + fmt(totalSpent);
   el('cSpentSub').textContent= pctUsed.toFixed(1) + '% of approved budget';
-  el('cBalance').textContent = '₹' + fmt(Math.abs(balance));
-  el('cBalSub').textContent  = balance < 0 ? '⚠ Over budget' : 'remaining';
+  el('cBalance').textContent = 'â¹' + fmt(Math.abs(balance));
+  el('cBalSub').textContent  = balance < 0 ? 'â  Over budget' : 'remaining';
 
   const pctEl = el('cPct');
   pctEl.textContent = pctUsed.toFixed(1) + '%';
@@ -710,13 +710,13 @@ async function submitExpense() {
 
   if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbySPIe3CHzPg2HVB0yz6VToWfMmo8kPVkvkbIO_s4WF0T-5DXCeJaCFl2zEoN8I0Os/exec') {
     el('submitStatus').style.color = 'var(--amber)';
-    el('submitStatus').textContent = 'Apps Script not yet configured — opening Google Sheet for manual entry…';
+    el('submitStatus').textContent = 'Apps Script not yet configured â opening Google Sheet for manual entryâ¦';
     setTimeout(() => window.open('https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/edit', '_blank'), 1200);
     return;
   }
 
   el('submitStatus').style.color = 'var(--green)';
-  el('submitStatus').textContent = 'Submitting…';
+  el('submitStatus').textContent = 'Submittingâ¦';
 
   try {
     const res  = await fetch(APPS_SCRIPT_URL, {
@@ -725,11 +725,11 @@ async function submitExpense() {
       headers: { 'Content-Type': 'application/json' }
     });
     const json = await res.json();
-    if (json.status === 'success') {
-      el('submitStatus').textContent = '✓ Expense added to the sheet!';
+    if (json.success) {
+      el('submitStatus').textContent = 'â Expense added to the sheet!';
       setTimeout(() => { closeModal(); loadData(); }, 1600);
     } else {
-      throw new Error(json.message);
+      throw new Error(json.error || 'Unknown error');
     }
   } catch (err) {
     el('submitStatus').style.color = 'var(--red)';
