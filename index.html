@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Janman Finance Dashboard</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --green:       #1a5c38;
+      --green-light: #2e7d52;
+      --amber:       #d97706;
+      --red:         #dc2626;
+      --blue:        #2563eb;
+      --bg:          #f3f6f4;
+      --card:        #ffffff;
+      --border:      #e5e7eb;
+      --text:        #111827;
+      --muted:       #6b7280;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* ── Header ── */
+    header {
+      background: var(--green);
+      color: #fff;
+      padding: 0.9rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    header .brand { font-size: 0.7rem; opacity: 0.75; letter-spacing: 0.08em; text-transform: uppercase; }
+    header h1 { font-size: 1.1rem; font-weight: 700; margin-top: 2px; }
+    header .hdr-right { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+    .hdr-ts { font-size: 0.72rem; opacity: 0.7; }
+    .hdr-btn {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.35);
+      color: #fff;
+      padding: 0.35rem 0.9rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.82rem;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .hdr-btn:hover { background: rgba(255,255,255,0.25); }
+
+    /* ── Tabs ── */
+    .tabs {
+      background: #fff;
+      border-bottom: 2px solid var(--border);
+      padding: 0 1.5rem;
+      display: flex;
+    }
+    .tab {
+      padding: 0.75rem 1.25rem;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--muted);
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: color 0.15s;
+    }
+    .tab.active { color: var(--green); border-bottom-color: var(--green); }
+    .tab:hover:not(.active) { color: var(--text); }
+
+    /* ── Container ── */
+    .container { padding: 1.25rem 1.5rem; max-width: 1200px; margin: 0 auto; }
+
+    /* ── Summary Cards ── */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    .card {
+      background: var(--card);
+      border-radius: 10px;
+      padding: 1.1rem 1.25rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+      border-top: 4px solid transparent;
+    }
+    .card.c-budget  { border-top-color: var(--green); }
+    .card.c-spent   { border-top-color: var(--amber); }
+    .card.c-balance { border-top-color: var(--blue); }
+    .card.c-pct     { border-top-color: var(--red); }
+    .card .c-label  { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 600; margin-bottom: 0.35rem; }
+    .card .c-value  { font-size: 1.45rem; font-weight: 800; }
+    .card .c-sub    { font-size: 0.72rem; color: var(--muted); margin-top: 0.2rem; }
+
+    /* ── Budget Table ── */
+    .panel {
+      background: var(--card);
+      border-radius: 10px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+      margin-bottom: 1.25rem;
+      overflow: hidden;
+    }
+    .panel-header {
+      padding: 1rem 1.25rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .panel-title { font-size: 0.9rem; font-weight: 700; }
+    .panel-hint  { font-size: 0.72rem; color: var(--muted); }
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      text-align: left;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.55rem 1rem;
+      background: #f9fafb;
+      border-bottom: 1px solid var(--border);
+    }
+    td { padding: 0.65rem 1rem; border-bottom: 1px solid var(--border); font-size: 0.85rem; vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr.total-row td { font-weight: 700; background: #f9fafb; }
+    .num { text-align: right; font-variant-numeric: tabular-nums; }
+
+    /* ── Progress bar ── */
+    .bar-wrap { min-width: 130px; }
+    .bar-track {
+      height: 8px;
+      background: #e5e7eb;
+      border-radius: 4px;
+      position: relative;
+      overflow: visible;
+    }
+    .bar-fill { height: 100%; border-radius: 4px; }
+    .bar-marker {
+      position: absolute;
+      top: -5px;
+      width: 2px;
+      height: 18px;
+      background: #ef4444;
+      border-radius: 1px;
+      left: 90%;
+    }
+    .bar-marker::after {
+      content: '90%';
+      position: absolute;
+      top: -14px;
+      left: 3px;
+      font-size: 0.6rem;
+      color: #ef4444;
+      white-space: nowrap;
+    }
+    .bar-pct { font-size: 0.7rem; color: var(--muted); margin-top: 3px; }
+
+    /* ── Chips ── */
+    .chip {
+      display: inline-block;
+      padding: 0.15rem 0.55rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+    .chip-green  { background: #d1fae5; color: #065f46; }
+    .chip-amber  { background: #fef3c7; color: #92400e; }
+    .chip-red    { background: #fee2e2; color: #991b1b; }
+    .chip-gray   { background: #f3f4f6; color: #6b7280; }
+
+    /* ── Transactions ── */
+    .txn-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.65rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .txn-row:last-child { border-bottom: none; }
+    .txn-date { font-size: 0.75rem; color: var(--muted); min-width: 62px; padding-top: 1px; }
+    .txn-body { flex: 1; }
+    .txn-name { font-size: 0.85rem; }
+    .txn-meta { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+    .txn-badge { font-size: 0.7rem; background: #f3f4f6; color: #374151; padding: 0.1rem 0.45rem; border-radius: 4px; }
+    .txn-amt { font-size: 0.9rem; font-weight: 700; color: var(--red); white-space: nowrap; }
+
+    /* ── FAB ── */
+    .fab {
+      position: fixed;
+      bottom: 1.75rem;
+      right: 1.75rem;
+      background: var(--green);
+      color: #fff;
+      border: none;
+      width: 3.25rem;
+      height: 3.25rem;
+      border-radius: 50%;
+      font-size: 1.6rem;
+      line-height: 1;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 90;
+    }
+    .fab:hover { background: var(--green-light); }
+
+    /* ── Modal ── */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .overlay.open { display: flex; }
+    .modal {
+      background: #fff;
+      border-radius: 12px;
+      padding: 1.75rem;
+      width: 460px;
+      max-width: 100%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    .modal h2 { font-size: 1rem; font-weight: 700; margin-bottom: 1.25rem; }
+    .fg { margin-bottom: 0.9rem; }
+    .fg label { display: block; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 0.3rem; }
+    .fg input, .fg select {
+      width: 100%;
+      padding: 0.55rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      font-size: 0.88rem;
+      outline: none;
+      color: var(--text);
+    }
+    .fg input:focus, .fg select:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(26,92,56,0.12); }
+    .fg-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .modal-actions { display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.25rem; }
+    .btn-cancel { padding: 0.55rem 1.1rem; border: 1px solid var(--border); background: #fff; border-radius: 7px; cursor: pointer; font-size: 0.85rem; }
+    .btn-submit { padding: 0.55rem 1.4rem; background: var(--green); color: #fff; border: none; border-radius: 7px; cursor: pointer; font-size: 0.85rem; font-weight: 700; }
+    .btn-submit:hover { background: var(--green-light); }
+    .submit-status { font-size: 0.82rem; margin-top: 0.5rem; min-height: 1.2em; }
+
+    /* ── Loading / error ── */
+    .loading { text-align: center; padding: 3rem 1rem; color: var(--muted); font-size: 0.9rem; }
+    .err-banner { background: #fee2e2; border: 1px solid #fca5a5; color: #991b1b; padding: 0.75rem 1rem; border-radius: 8px; font-size: 0.82rem; margin-bottom: 1rem; }
+
+    @media (max-width: 700px) {
+      .cards { grid-template-columns: 1fr 1fr; }
+      .container { padding: 1rem; }
+      th, td { padding: 0.5rem 0.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header>
+  <div>
+    <div class="brand">Janman People's Foundation</div>
+    <h1>Finance Dashboard — Jan Nyay Abhiyan &amp; DLF</h1>
+  </div>
+  <div class="hdr-right">
+    <span class="hdr-ts" id="lastUpdated"></span>
+    <button class="hdr-btn" onclick="loadData()">↻ Refresh</button>
+    <button class="hdr-btn" onclick="openModal()">+ Add Expense</button>
+  </div>
+</header>
+
+<!-- ── TABS ── -->
+<div class="tabs">
+  <div class="tab active" id="tab-jna" onclick="switchTab('jna')">Jan Nyay Abhiyan</div>
+  <div class="tab" id="tab-dlf" onclick="switchTab('dlf')">District Legal Fellowship</div>
+</div>
+
+<!-- ── MAIN ── -->
+<div class="container">
+  <div id="loadingState" class="loading">Loading from Google Sheets…</div>
+  <div id="errorBanner" class="err-banner" style="display:none;"></div>
+
+  <div id="dashboard" style="display:none;">
+    <!-- Cards -->
+    <div class="cards">
+      <div class="card c-budget">
+        <div class="c-label">Total Budget</div>
+        <div class="c-value" id="cBudget">—</div>
+        <div class="c-sub" id="cPeriod">—</div>
+      </div>
+      <div class="card c-spent">
+        <div class="c-label">Total Spent</div>
+        <div class="c-value" id="cSpent">—</div>
+        <div class="c-sub" id="cSpentSub">—</div>
+      </div>
+      <div class="card c-balance">
+        <div class="c-label">Balance Remaining</div>
+        <div class="c-value" id="cBalance">—</div>
+        <div class="c-sub" id="cBalSub">—</div>
+      </div>
+      <div class="card c-pct">
+        <div class="c-label">Budget Utilised</div>
+        <div class="c-value" id="cPct">—</div>
+        <div class="c-sub">90% = funder target</div>
+      </div>
+    </div>
+
+    <!-- Budget vs Actual Table -->
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">Budget vs. Actual by Expense Head</span>
+        <span class="panel-hint">🔴 marker = 90% spending target (funder expectation)</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Expense Head</th>
+            <th class="num">Budget (₹)</th>
+            <th class="num">Spent (₹)</th>
+            <th class="num">Balance (₹)</th>
+            <th>Progress</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="budgetTbody"></tbody>
+      </table>
+    </div>
+
+    <!-- Recent Transactions -->
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">Recent Transactions</span>
+        <span class="panel-hint" id="txnCount"></span>
+      </div>
+      <div id="txnList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- FAB -->
+<button class="fab" onclick="openModal()" title="Add Expense">+</button>
+
+<!-- ── ADD EXPENSE MODAL ── -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <h2>Add New Expense</h2>
+    <div class="fg-row">
+      <div class="fg">
+        <label>Date</label>
+        <input type="date" id="fDate" />
+      </div>
+      <div class="fg">
+        <label>Amount (₹)</label>
+        <input type="number" id="fAmount" placeholder="0" min="0" />
+      </div>
+    </div>
+    <div class="fg">
+      <label>Description / Narration</label>
+      <input type="text" id="fNarration" placeholder="e.g. Consultation Fees Shashwat" />
+    </div>
+    <div class="fg-row">
+      <div class="fg">
+        <label>Project</label>
+        <select id="fProject">
+          <option value="Jan Nyay Abhiyan">Jan Nyay Abhiyan</option>
+          <option value="District Legal Fellowship">District Legal Fellowship</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>Expense Head</label>
+        <select id="fHead">
+          <option value="Salary/Honrarium">Salary / Honorarium</option>
+          <option value="Travel/Boarding/Lodging">Travel / Boarding / Lodging</option>
+          <option value="Program Expense">Program Expense</option>
+          <option value="Administration Cost">Administration Cost</option>
+          <option value="Admin Staff">Admin Staff</option>
+          <option value="Cap Ex">Capital Expenditure</option>
+          <option value="TDS">TDS</option>
+        </select>
+      </div>
+    </div>
+    <div class="fg">
+      <label>Remark / Period</label>
+      <input type="text" id="fRemark" placeholder="e.g. For July 2025" />
+    </div>
+    <div class="submit-status" id="submitStatus"></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-submit" onclick="submitExpense()">Add to Sheet</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ╔══════════════════════════════════════════════════════════╗
+// ║  CONFIGURATION — update APPS_SCRIPT_URL after deploy    ║
+// ╚══════════════════════════════════════════════════════════╝
+const APPS_SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+const SHEET_ID        = '12xfuCqcdNQupjBXsvF8ssg0mmxIp-qepP3mR2MgmugI';
+
+// Budget figures — edit here to match approved grant budgets
+const BUDGETS = {
+  'Jan Nyay Abhiyan': {
+    label:  'Jan Nyay Abhiyan (All years)',
+    period: 'Y1: Jul 2024–Jun 2025 · Y2: Jul 2025–Jun 2026',
+    total:  5998000,
+    heads: {
+      'Salary/Honrarium':        { budget: 2513400, label: 'Salary & Honorarium (Program)' },
+      'Admin Staff':             { budget: 450000,  label: 'Admin Staff' },
+      'Cap Ex':                  { budget:  63000,  label: 'Capital Expenditure' },
+      'Travel/Boarding/Lodging': { budget: 249900,  label: 'Travel & Lodging' },
+      'Program Expense':         { budget: 1500000, label: 'Program Expense' },
+      'Administration Cost':     { budget: 1221700, label: 'Administration Cost' },
+    }
+  },
+  'District Legal Fellowship': {
+    label:  'District Legal Fellowship (Y1)',
+    period: 'Y1: Mar 2025 – Mar 2026',
+    total:  2998000,
+    heads: {
+      'Salary/Honrarium':        { budget: 2436000, label: 'Salary & Honorarium' },
+      'Travel/Boarding/Lodging': { budget:  240000, label: 'Travel & Lodging' },
+      'Program Expense':         { budget:  322000, label: 'Program Expense' },
+      'Administration Cost':     { budget:       0, label: 'Administration Cost' },
+      'Cap Ex':                  { budget:       0, label: 'Capital Expenditure' },
+    }
+  }
+};
+
+// ── State ─────────────────────────────────────────────────
+let allExpenses = [];
+let activeProject = 'Jan Nyay Abhiyan';
+
+// ── Tab switching ─────────────────────────────────────────
+function switchTab(tab) {
+  activeProject = tab === 'jna' ? 'Jan Nyay Abhiyan' : 'District Legal Fellowship';
+  document.getElementById('tab-jna').classList.toggle('active', tab === 'jna');
+  document.getElementById('tab-dlf').classList.toggle('active', tab === 'dlf');
+  document.getElementById('fProject').value = activeProject;
+  if (allExpenses.length) renderDashboard();
+}
+
+// ── Data loading ──────────────────────────────────────────
+async function loadData() {
+  document.getElementById('loadingState').style.display = 'block';
+  document.getElementById('dashboard').style.display   = 'none';
+  document.getElementById('errorBanner').style.display = 'none';
+
+  try {
+    let data;
+    if (APPS_SCRIPT_URL && APPS_SCRIPT_URL !== 'YOUR_APPS_SCRIPT_URL_HERE') {
+      const res  = await fetch(APPS_SCRIPT_URL);
+      const json = await res.json();
+      if (json.status !== 'success') throw new Error(json.message);
+      data = json.data;
+    } else {
+      // Fallback: CSV export (sheet must be "Anyone with link can view")
+      const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=1066410601`;
+      const res  = await fetch(url);
+      const text = await res.text();
+      data = parseCSV(text);
+    }
+
+    allExpenses = data;
+    document.getElementById('lastUpdated').textContent =
+      'Live · updated ' + new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+    renderDashboard();
+    document.getElementById('loadingState').style.display = 'none';
+    document.getElementById('dashboard').style.display   = 'block';
+  } catch (err) {
+    document.getElementById('loadingState').style.display = 'none';
+    document.getElementById('errorBanner').textContent =
+      'Could not load data: ' + err.message +
+      (APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE'
+        ? ' — Please deploy the Apps Script and update APPS_SCRIPT_URL in this file.'
+        : '');
+    document.getElementById('errorBanner').style.display = 'block';
+    allExpenses = [];
+    renderDashboard();
+    document.getElementById('dashboard').style.display = 'block';
+  }
+}
+
+// ── CSV parser ────────────────────────────────────────────
+function parseCSV(text) {
+  const lines = text.split('\n').filter(l => l.trim());
+  const rows = [];
+  for (let i = 2; i < lines.length; i++) {
+    const cols = splitLine(lines[i]);
+    const amt  = parseFloat((cols[3] || '').replace(/[^0-9.]/g, ''));
+    const head = (cols[5] || '').trim();
+    if (!amt || amt <= 0 || !head) continue;
+    rows.push({
+      date:      (cols[0] || '').trim(),
+      narration: (cols[1] || '').trim(),
+      amount:    amt,
+      head:      head,
+      remark:    (cols[6] || '').trim(),
+      project:   (cols[7] || '').trim()
+    });
+  }
+  return rows;
+}
+
+function splitLine(line) {
+  const r = []; let cur = '', q = false;
+  for (const c of line) {
+    if (c === '"') { q = !q; continue; }
+    if (c === ',' && !q) { r.push(cur.trim()); cur = ''; continue; }
+    cur += c;
+  }
+  r.push(cur.trim());
+  return r;
+}
+
+// ── Normalize project name (handle trailing spaces) ───────
+function normalizeProject(p) {
+  const s = (p || '').trim().toLowerCase();
+  if (s.includes('district legal')) return 'District Legal Fellowship';
+  if (s.includes('jan nyay'))       return 'Jan Nyay Abhiyan';
+  return p.trim();
+}
+
+// ── Render ────────────────────────────────────────────────
+function renderDashboard() {
+  const cfg = BUDGETS[activeProject];
+
+  const filtered = allExpenses.filter(e => normalizeProject(e.project) === activeProject);
+
+  const spentMap = {};
+  filtered.forEach(e => {
+    const h = (e.head || '').trim();
+    spentMap[h] = (spentMap[h] || 0) + e.amount;
+  });
+
+  const totalSpent  = Object.values(spentMap).reduce((a, b) => a + b, 0);
+  const totalBudget = cfg.total;
+  const balance     = totalBudget - totalSpent;
+  const pctUsed     = totalBudget > 0 ? (totalSpent / totalBudget * 100) : 0;
+
+  el('cBudget').textContent  = '₹' + fmt(totalBudget);
+  el('cPeriod').textContent  = cfg.period;
+  el('cSpent').textContent   = '₹' + fmt(totalSpent);
+  el('cSpentSub').textContent= pctUsed.toFixed(1) + '% of approved budget';
+  el('cBalance').textContent = '₹' + fmt(Math.abs(balance));
+  el('cBalSub').textContent  = balance < 0 ? '⚠ Over budget' : 'remaining';
+
+  const pctEl = el('cPct');
+  pctEl.textContent = pctUsed.toFixed(1) + '%';
+  pctEl.style.color =
+    pctUsed >= 100 ? 'var(--red)' :
+    pctUsed >=  90 ? 'var(--amber)' : '#059669';
+
+  const tbody = el('budgetTbody');
+  tbody.innerHTML = '';
+
+  const allHeads = new Set([...Object.keys(cfg.heads), ...Object.keys(spentMap)]);
+  allHeads.forEach(head => {
+    const hCfg    = cfg.heads[head];
+    const budget  = hCfg ? hCfg.budget : 0;
+    const label   = hCfg ? hCfg.label  : head;
+    const spent   = spentMap[head] || 0;
+    const bal     = budget - spent;
+    const pct     = budget > 0 ? Math.min(spent / budget * 100, 100) : (spent > 0 ? 100 : 0);
+    const actualPct = budget > 0 ? spent / budget * 100 : 0;
+    const barColor  = actualPct >= 100 ? '#dc2626' : actualPct >= 90 ? '#d97706' : '#10b981';
+
+    let chipClass, chipText;
+    if      (actualPct >= 100) { chipClass = 'chip-red';   chipText = 'Over Budget'; }
+    else if (actualPct >=  90) { chipClass = 'chip-amber'; chipText = 'At 90% Target'; }
+    else if (actualPct >=  50) { chipClass = 'chip-green'; chipText = 'On Track'; }
+    else if (spent > 0)        { chipClass = 'chip-green'; chipText = 'Within Budget'; }
+    else                       { chipClass = 'chip-gray';  chipText = 'No Spend Yet'; }
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><strong>${escHtml(label)}</strong></td>
+      <td class="num">${budget > 0 ? '&#8377;' + fmt(budget) : '&mdash;'}</td>
+      <td class="num">&#8377;${fmt(spent)}</td>
+      <td class="num" style="color:${bal < 0 ? 'var(--red)' : 'inherit'}">
+        ${budget > 0 ? (bal < 0 ? '&minus;' : '') + '&#8377;' + fmt(Math.abs(bal)) : '&mdash;'}
+      </td>
+      <td>
+        ${budget > 0 ? `
+          <div class="bar-wrap">
+            <div class="bar-track">
+              <div class="bar-fill" style="width:${pct.toFixed(1)}%; background:${barColor};"></div>
+              <div class="bar-marker"></div>
+            </div>
+            <div class="bar-pct">${actualPct.toFixed(1)}% used</div>
+          </div>` :
+          `<span style="font-size:0.75rem; color:var(--muted);">No budget line</span>`
+        }
+      </td>
+      <td><span class="chip ${chipClass}">${chipText}</span></td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+
+  // Totals row
+  const trTot = document.createElement('tr');
+  trTot.className = 'total-row';
+  const totPct = totalBudget > 0 ? Math.min(totalSpent / totalBudget * 100, 100) : 0;
+  const totBar = totalSpent / totalBudget * 100;
+  trTot.innerHTML = `
+    <td>TOTAL</td>
+    <td class="num">&#8377;${fmt(totalBudget)}</td>
+    <td class="num">&#8377;${fmt(totalSpent)}</td>
+    <td class="num" style="color:${balance < 0 ? 'var(--red)' : '#059669'}">
+      ${balance < 0 ? '&minus;' : ''}&#8377;${fmt(Math.abs(balance))}
+    </td>
+    <td>
+      <div class="bar-wrap">
+        <div class="bar-track">
+          <div class="bar-fill" style="width:${totPct.toFixed(1)}%; background:${totBar >= 100 ? '#dc2626' : totBar >= 90 ? '#d97706' : '#10b981'};"></div>
+          <div class="bar-marker"></div>
+        </div>
+        <div class="bar-pct">${pctUsed.toFixed(1)}% used</div>
+      </div>
+    </td>
+    <td></td>
+  `;
+  tbody.appendChild(trTot);
+
+  // Transactions
+  const sorted = [...filtered].sort((a, b) => parseDate(b.date) - parseDate(a.date));
+  el('txnCount').textContent = 'Showing ' + Math.min(sorted.length, 25) + ' of ' + sorted.length + ' transactions';
+
+  const txnList = el('txnList');
+  txnList.innerHTML = '';
+  sorted.slice(0, 25).forEach(e => {
+    const div = document.createElement('div');
+    div.className = 'txn-row';
+    div.innerHTML = `
+      <div class="txn-date">${e.date}</div>
+      <div class="txn-body">
+        <div class="txn-name">${escHtml(e.narration)}</div>
+        ${e.remark ? `<div class="txn-meta">${escHtml(e.remark)}</div>` : ''}
+      </div>
+      <span class="txn-badge">${escHtml(e.head)}</span>
+      <div class="txn-amt">&minus;&#8377;${fmt(e.amount)}</div>
+    `;
+    txnList.appendChild(div);
+  });
+}
+
+
+// Helpers
+function el(id) { return document.getElementById(id); }
+
+function fmt(n) {
+  if (!n && n !== 0) return '0';
+  return Math.round(n).toLocaleString('en-IN');
+}
+
+function parseDate(str) {
+  if (!str) return new Date(0);
+  const p = str.split('/');
+  if (p.length === 3) {
+    const y = p[2].length === 2 ? '20' + p[2] : p[2];
+    return new Date(y + '-' + p[1] + '-' + p[0]);
+  }
+  return new Date(str);
+}
+
+function escHtml(s) {
+  return (s || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+// Modal
+function openModal() {
+  el('fDate').value    = new Date().toISOString().split('T')[0];
+  el('fProject').value = activeProject;
+  el('submitStatus').textContent = '';
+  el('submitStatus').style.color = '';
+  el('overlay').classList.add('open');
+}
+
+function closeModal() {
+  el('overlay').classList.remove('open');
+}
+
+async function submitExpense() {
+  const date      = el('fDate').value;
+  const amount    = parseFloat(el('fAmount').value);
+  const narration = el('fNarration').value.trim();
+  const project   = el('fProject').value;
+  const head      = el('fHead').value;
+  const remark    = el('fRemark').value.trim();
+
+  if (!date || !amount || !narration || !head) {
+    el('submitStatus').style.color = 'var(--red)';
+    el('submitStatus').textContent = 'Please fill in Date, Amount, Description and Head.';
+    return;
+  }
+
+  const d = new Date(date);
+  const fmtDate = String(d.getDate()).padStart(2,'0') + '/' + String(d.getMonth()+1).padStart(2,'0') + '/' + String(d.getFullYear()).slice(-2);
+
+  if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
+    el('submitStatus').style.color = 'var(--amber)';
+    el('submitStatus').textContent = 'Apps Script not yet configured — opening Google Sheet for manual entry…';
+    setTimeout(() => window.open('https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/edit', '_blank'), 1200);
+    return;
+  }
+
+  el('submitStatus').style.color = 'var(--green)';
+  el('submitStatus').textContent = 'Submitting…';
+
+  try {
+    const res  = await fetch(APPS_SCRIPT_URL, {
+      method:  'POST',
+      body:    JSON.stringify({ date: fmtDate, amount, narration, head, remark, project }),
+      headers: { 'Content-Type': 'application/json' }
+    });
+    const json = await res.json();
+    if (json.status === 'success') {
+      el('submitStatus').textContent = '✓ Expense added to the sheet!';
+      setTimeout(() => { closeModal(); loadData(); }, 1600);
+    } else {
+      throw new Error(json.message);
+    }
+  } catch (err) {
+    el('submitStatus').style.color = 'var(--red)';
+    el('submitStatus').textContent = 'Error: ' + err.message;
+  }
+}
+
+// Close on backdrop click
+el('overlay').addEventListener('click', e => { if (e.target === el('overlay')) closeModal(); });
+
+// Set defaults
+el('fDate').value = new Date().toISOString().split('T')[0];
+
+// Boot
+loadData();
+</script>
+</body>
+</html>
