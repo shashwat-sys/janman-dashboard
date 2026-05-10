@@ -401,7 +401,7 @@
 // ╔══════════════════════════════════════════════════════════╗
 // ║  CONFIGURATION — update APPS_SCRIPT_URL after deploy    ║
 // ╚══════════════════════════════════════════════════════════╝
-const APPS_SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbySPIe3CHzPg2HVB0yz6VToWfMmo8kPVkvkbIO_s4WF0T-5DXCeJaCFl2zEoN8I0Os/exec';
 const SHEET_ID        = '12xfuCqcdNQupjBXsvF8ssg0mmxIp-qepP3mR2MgmugI';
 
 // Budget figures — edit here to match approved grant budgets
@@ -454,7 +454,7 @@ async function loadData() {
 
   try {
     let data;
-    if (APPS_SCRIPT_URL && APPS_SCRIPT_URL !== 'YOUR_APPS_SCRIPT_URL_HERE') {
+    if (APPS_SCRIPT_URL && APPS_SCRIPT_URL !== 'https://script.google.com/macros/s/AKfycbySPIe3CHzPg2HVB0yz6VToWfMmo8kPVkvkbIO_s4WF0T-5DXCeJaCFl2zEoN8I0Os/exec') {
       const res  = await fetch(APPS_SCRIPT_URL);
       const json = await res.json();
       if (json.status !== 'success') throw new Error(json.message);
@@ -477,7 +477,7 @@ async function loadData() {
     document.getElementById('loadingState').style.display = 'none';
     document.getElementById('errorBanner').textContent =
       'Could not load data: ' + err.message +
-      (APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE'
+      (APPS_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbySPIe3CHzPg2HVB0yz6VToWfMmo8kPVkvkbIO_s4WF0T-5DXCeJaCFl2zEoN8I0Os/exec'
         ? ' — Please deploy the Apps Script and update APPS_SCRIPT_URL in this file.'
         : '');
     document.getElementById('errorBanner').style.display = 'block';
@@ -708,7 +708,7 @@ async function submitExpense() {
   const d = new Date(date);
   const fmtDate = String(d.getDate()).padStart(2,'0') + '/' + String(d.getMonth()+1).padStart(2,'0') + '/' + String(d.getFullYear()).slice(-2);
 
-  if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
+  if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbySPIe3CHzPg2HVB0yz6VToWfMmo8kPVkvkbIO_s4WF0T-5DXCeJaCFl2zEoN8I0Os/exec') {
     el('submitStatus').style.color = 'var(--amber)';
     el('submitStatus').textContent = 'Apps Script not yet configured — opening Google Sheet for manual entry…';
     setTimeout(() => window.open('https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/edit', '_blank'), 1200);
