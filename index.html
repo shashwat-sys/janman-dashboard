@@ -21,7 +21,7 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-    /* ââ Header ââ */
+    /* Ã¢ÂÂÃ¢ÂÂ Header Ã¢ÂÂÃ¢ÂÂ */
     header {
       background: var(--green);
       color: #fff;
@@ -49,7 +49,7 @@
     }
     .hdr-btn:hover { background: rgba(255,255,255,0.25); }
 
-    /* ââ Tabs ââ */
+    /* Ã¢ÂÂÃ¢ÂÂ Tabs Ã¢ÂÂÃ¢ÂÂ */
     .tabs {
       background: #fff;
       border-bottom: 2px solid var(--border);
@@ -69,10 +69,10 @@
     .tab.active { color: var(--green); border-bottom-color: var(--green); }
     .tab:hover:not(.active) { color: var(--text); }
 
-    /* ââ Container ââ */
+    /* Ã¢ÂÂÃ¢ÂÂ Container Ã¢ÂÂÃ¢ÂÂ */
     .container { padding: 1.25rem 1.5rem; max-width: 1200px; margin: 0 auto; }
 
-    /* ââ Summary Cards ââ */
+    /* Ã¢ÂÂÃ¢ÂÂ Summary Cards Ã¢ÂÂÃ¢ÂÂ */
     .cards {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -94,7 +94,7 @@
     .card .c-value  { font-size: 1.45rem; font-weight: 800; }
     .card .c-sub    { font-size: 0.72rem; color: var(--muted); margin-top: 0.2rem; }
 
-    /* ââ Budget Table ââ */
+    /* Ã¢ÂÂÃ¢ÂÂ Budget Table Ã¢ÂÂÃ¢ÂÂ */
     .panel {
       background: var(--card);
       border-radius: 10px;
@@ -128,7 +128,7 @@
     tr.total-row td { font-weight: 700; background: #f9fafb; }
     .num { text-align: right; font-variant-numeric: tabular-nums; }
 
-    /* ââ Progress bar ââ */
+    /* Ã¢ÂÂÃ¢ÂÂ Progress bar Ã¢ÂÂÃ¢ÂÂ */
     .bar-wrap { min-width: 130px; }
     .bar-track {
       height: 8px;
@@ -158,7 +158,7 @@
     }
     .bar-pct { font-size: 0.7rem; color: var(--muted); margin-top: 3px; }
 
-    /* ââ Chips ââ */
+    /* Ã¢ÂÂÃ¢ÂÂ Chips Ã¢ÂÂÃ¢ÂÂ */
     .chip {
       display: inline-block;
       padding: 0.15rem 0.55rem;
@@ -171,7 +171,7 @@
     .chip-red    { background: #fee2e2; color: #991b1b; }
     .chip-gray   { background: #f3f4f6; color: #6b7280; }
 
-    /* ââ Transactions ââ */
+    /* Ã¢ÂÂÃ¢ÂÂ Transactions Ã¢ÂÂÃ¢ÂÂ */
     .txn-row {
       display: flex;
       align-items: flex-start;
@@ -187,7 +187,7 @@
     .txn-badge { font-size: 0.7rem; background: #f3f4f6; color: #374151; padding: 0.1rem 0.45rem; border-radius: 4px; }
     .txn-amt { font-size: 0.9rem; font-weight: 700; color: var(--red); white-space: nowrap; }
 
-    /* ââ FAB ââ */
+    /* Ã¢ÂÂÃ¢ÂÂ FAB Ã¢ÂÂÃ¢ÂÂ */
     .fab {
       position: fixed;
       bottom: 1.75rem;
@@ -209,7 +209,7 @@
     }
     .fab:hover { background: var(--green-light); }
 
-    /* ââ Modal ââ */
+    /* Ã¢ÂÂÃ¢ÂÂ Modal Ã¢ÂÂÃ¢ÂÂ */
     .overlay {
       position: fixed;
       inset: 0;
@@ -249,7 +249,7 @@
     .btn-submit:hover { background: var(--green-light); }
     .submit-status { font-size: 0.82rem; margin-top: 0.5rem; min-height: 1.2em; }
 
-    /* ââ Loading / error ââ */
+    /* Ã¢ÂÂÃ¢ÂÂ Loading / error Ã¢ÂÂÃ¢ÂÂ */
     .loading { text-align: center; padding: 3rem 1rem; color: var(--muted); font-size: 0.9rem; }
     .err-banner { background: #fee2e2; border: 1px solid #fca5a5; color: #991b1b; padding: 0.75rem 1rem; border-radius: 8px; font-size: 0.82rem; margin-bottom: 1rem; }
 
@@ -262,28 +262,28 @@
 </head>
 <body>
 
-<!-- ââ HEADER ââ -->
+<!-- Ã¢ÂÂÃ¢ÂÂ HEADER Ã¢ÂÂÃ¢ÂÂ -->
 <header>
   <div>
     <div class="brand">Janman People's Foundation</div>
-    <h1>Finance Dashboard â Jan Nyay Abhiyan &amp; DLF</h1>
+    <h1>Finance Dashboard Ã¢ÂÂ Jan Nyay Abhiyan &amp; DLF</h1>
   </div>
   <div class="hdr-right">
     <span class="hdr-ts" id="lastUpdated"></span>
-    <button class="hdr-btn" onclick="loadData()">â» Refresh</button>
+    <button class="hdr-btn" onclick="loadData()">Ã¢ÂÂ» Refresh</button>
     <button class="hdr-btn" onclick="openModal()">+ Add Expense</button>
   </div>
 </header>
 
-<!-- ââ TABS ââ -->
+<!-- Ã¢ÂÂÃ¢ÂÂ TABS Ã¢ÂÂÃ¢ÂÂ -->
 <div class="tabs">
   <div class="tab active" id="tab-jna" onclick="switchTab('jna')">Jan Nyay Abhiyan</div>
   <div class="tab" id="tab-dlf" onclick="switchTab('dlf')">District Legal Fellowship</div>
 </div>
 
-<!-- ââ MAIN ââ -->
+<!-- Ã¢ÂÂÃ¢ÂÂ MAIN Ã¢ÂÂÃ¢ÂÂ -->
 <div class="container">
-  <div id="loadingState" class="loading">Loading from Google Sheetsâ¦</div>
+  <div id="loadingState" class="loading">Loading from Google SheetsÃ¢ÂÂ¦</div>
   <div id="errorBanner" class="err-banner" style="display:none;"></div>
 
   <div id="dashboard" style="display:none;">
@@ -291,22 +291,22 @@
     <div class="cards">
       <div class="card c-budget">
         <div class="c-label">Total Budget</div>
-        <div class="c-value" id="cBudget">â</div>
-        <div class="c-sub" id="cPeriod">â</div>
+        <div class="c-value" id="cBudget">Ã¢ÂÂ</div>
+        <div class="c-sub" id="cPeriod">Ã¢ÂÂ</div>
       </div>
       <div class="card c-spent">
         <div class="c-label">Total Spent</div>
-        <div class="c-value" id="cSpent">â</div>
-        <div class="c-sub" id="cSpentSub">â</div>
+        <div class="c-value" id="cSpent">Ã¢ÂÂ</div>
+        <div class="c-sub" id="cSpentSub">Ã¢ÂÂ</div>
       </div>
       <div class="card c-balance">
         <div class="c-label">Balance Remaining</div>
-        <div class="c-value" id="cBalance">â</div>
-        <div class="c-sub" id="cBalSub">â</div>
+        <div class="c-value" id="cBalance">Ã¢ÂÂ</div>
+        <div class="c-sub" id="cBalSub">Ã¢ÂÂ</div>
       </div>
       <div class="card c-pct">
         <div class="c-label">Budget Utilised</div>
-        <div class="c-value" id="cPct">â</div>
+        <div class="c-value" id="cPct">Ã¢ÂÂ</div>
         <div class="c-sub">90% = funder target</div>
       </div>
     </div>
@@ -315,15 +315,15 @@
     <div class="panel">
       <div class="panel-header">
         <span class="panel-title">Budget vs. Actual by Expense Head</span>
-        <span class="panel-hint">ð´ marker = 90% spending target (funder expectation)</span>
+        <span class="panel-hint">Ã°ÂÂÂ´ marker = 90% spending target (funder expectation)</span>
       </div>
       <table>
         <thead>
           <tr>
             <th>Expense Head</th>
-            <th class="num">Budget (â¹)</th>
-            <th class="num">Spent (â¹)</th>
-            <th class="num">Balance (â¹)</th>
+            <th class="num">Budget (Ã¢ÂÂ¹)</th>
+            <th class="num">Spent (Ã¢ÂÂ¹)</th>
+            <th class="num">Balance (Ã¢ÂÂ¹)</th>
             <th>Progress</th>
             <th>Status</th>
           </tr>
@@ -332,7 +332,21 @@
       </table>
     </div>
 
-    <!-- Recent Transactions -->
+    <!-- Program Expense Breakdown -->
+  <div class="panel" id="progPanel" style="display:none;">
+    <div class="panel-header">
+      <span class="panel-title">Program Expense Breakdown</span>
+      <span class="panel-hint" id="progHint"></span>
+    </div>
+    <table>
+      <thead><tr>
+        <th>Sub-category</th><th class="num">Amount (₹)</th><th class="num">Share</th><th>Sample transactions</th>
+      </tr></thead>
+      <tbody id="progTbody"></tbody>
+    </table>
+  </div>
+
+  <!-- Recent Transactions -->
     <div class="panel">
       <div class="panel-header">
         <span class="panel-title">Recent Transactions</span>
@@ -346,7 +360,7 @@
 <!-- FAB -->
 <button class="fab" onclick="openModal()" title="Add Expense">+</button>
 
-<!-- ââ ADD EXPENSE MODAL ââ -->
+<!-- Ã¢ÂÂÃ¢ÂÂ ADD EXPENSE MODAL Ã¢ÂÂÃ¢ÂÂ -->
 <div class="overlay" id="overlay">
   <div class="modal">
     <h2>Add New Expense</h2>
@@ -356,7 +370,7 @@
         <input type="date" id="fDate" />
       </div>
       <div class="fg">
-        <label>Amount (â¹)</label>
+        <label>Amount (Ã¢ÂÂ¹)</label>
         <input type="number" id="fAmount" placeholder="0" min="0" />
       </div>
     </div>
@@ -398,17 +412,17 @@
 </div>
 
 <script>
-// ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
-// â  CONFIGURATION â update APPS_SCRIPT_URL after deploy    â
-// ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
+// Ã¢ÂÂ  CONFIGURATION Ã¢ÂÂ update APPS_SCRIPT_URL after deploy    Ã¢ÂÂ
+// Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbylXVOOYVNKmLD6UfQiDLHCtB1NZgqJkLwOn3WIlTsXXmJcMgWxdDjgHGrWD0Yycafq/exec';
 const SHEET_ID        = '12xfuCqcdNQupjBXsvF8ssg0mmxIp-qepP3mR2MgmugI';
 
-// Budget figures â edit here to match approved grant budgets
+// Budget figures Ã¢ÂÂ edit here to match approved grant budgets
 const BUDGETS = {
   'Jan Nyay Abhiyan': {
     label:  'Jan Nyay Abhiyan (All years)',
-    period: 'Y1: Jul 2024âJun 2025 Â· Y2: Jul 2025âJun 2026',
+    period: 'Y1: Jul 2024Ã¢ÂÂJun 2025 ÃÂ· Y2: Jul 2025Ã¢ÂÂJun 2026',
     total:  5998000,
     heads: {
       'Salary/Honrarium':        { budget: 2513400, label: 'Salary & Honorarium (Program)' },
@@ -421,7 +435,7 @@ const BUDGETS = {
   },
   'District Legal Fellowship': {
     label:  'District Legal Fellowship (Y1)',
-    period: 'Y1: Mar 2025 â Mar 2026',
+    period: 'Y1: Mar 2025 Ã¢ÂÂ Mar 2026',
     total:  2998000,
     heads: {
       'Salary/Honrarium':        { budget: 2436000, label: 'Salary & Honorarium' },
@@ -433,11 +447,11 @@ const BUDGETS = {
   }
 };
 
-// ââ State âââââââââââââââââââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂ State Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 let allExpenses = [];
 let activeProject = 'Jan Nyay Abhiyan';
 
-// ââ Tab switching âââââââââââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂ Tab switching Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 function switchTab(tab) {
   activeProject = tab === 'jna' ? 'Jan Nyay Abhiyan' : 'District Legal Fellowship';
   document.getElementById('tab-jna').classList.toggle('active', tab === 'jna');
@@ -446,7 +460,7 @@ function switchTab(tab) {
   if (allExpenses.length) renderDashboard();
 }
 
-// ââ Data loading ââââââââââââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂ Data loading Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 async function loadData() {
   document.getElementById('loadingState').style.display = 'block';
   document.getElementById('dashboard').style.display   = 'none';
@@ -469,7 +483,7 @@ async function loadData() {
 
     allExpenses = data;
     document.getElementById('lastUpdated').textContent =
-      'Live Â· updated ' + new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+      'Live ÃÂ· updated ' + new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
     renderDashboard();
     document.getElementById('loadingState').style.display = 'none';
     document.getElementById('dashboard').style.display   = 'block';
@@ -478,7 +492,7 @@ async function loadData() {
     document.getElementById('errorBanner').textContent =
       'Could not load data: ' + err.message +
       (APPS_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbySPIe3CHzPg2HVB0yz6VToWfMmo8kPVkvkbIO_s4WF0T-5DXCeJaCFl2zEoN8I0Os/exec'
-        ? ' â Please deploy the Apps Script and update APPS_SCRIPT_URL in this file.'
+        ? ' Ã¢ÂÂ Please deploy the Apps Script and update APPS_SCRIPT_URL in this file.'
         : '');
     document.getElementById('errorBanner').style.display = 'block';
     allExpenses = [];
@@ -487,7 +501,7 @@ async function loadData() {
   }
 }
 
-// ââ CSV parser ââââââââââââââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂ CSV parser Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 function parseCSV(text) {
   const lines = text.split('\n').filter(l => l.trim());
   const rows = [];
@@ -519,7 +533,7 @@ function splitLine(line) {
   return r;
 }
 
-// ââ Normalize project name (handle trailing spaces) âââââââ
+// Ã¢ÂÂÃ¢ÂÂ Normalize project name (handle trailing spaces) Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 function normalizeProject(p) {
   const s = (p || '').trim().toLowerCase();
   if (s.includes('district legal')) return 'District Legal Fellowship';
@@ -527,7 +541,7 @@ function normalizeProject(p) {
   return p.trim();
 }
 
-// ââ Render ââââââââââââââââââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂ Render Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 function renderDashboard() {
   const cfg = BUDGETS[activeProject];
 
@@ -536,7 +550,12 @@ function renderDashboard() {
   const spentMap = {};
   filtered.forEach(e => {
     const h = (e.head || '').trim();
-    spentMap[h] = (spentMap[h] || 0) + e.amount;
+    let amt = e.amount;
+    if ((h === 'Salary/Honrarium' || h === 'Admin Staff') &&
+        !e.narration.toLowerCase().includes('travel')) {
+      amt = amt / 0.9; // gross up: add back 10% TDS deducted at source
+    }
+    spentMap[h] = (spentMap[h] || 0) + amt;
   });
 
   const totalSpent  = Object.values(spentMap).reduce((a, b) => a + b, 0);
@@ -544,12 +563,12 @@ function renderDashboard() {
   const balance     = totalBudget - totalSpent;
   const pctUsed     = totalBudget > 0 ? (totalSpent / totalBudget * 100) : 0;
 
-  el('cBudget').textContent  = 'â¹' + fmt(totalBudget);
+  el('cBudget').textContent  = 'Ã¢ÂÂ¹' + fmt(totalBudget);
   el('cPeriod').textContent  = cfg.period;
-  el('cSpent').textContent   = 'â¹' + fmt(totalSpent);
+  el('cSpent').textContent   = 'Ã¢ÂÂ¹' + fmt(totalSpent);
   el('cSpentSub').textContent= pctUsed.toFixed(1) + '% of approved budget';
-  el('cBalance').textContent = 'â¹' + fmt(Math.abs(balance));
-  el('cBalSub').textContent  = balance < 0 ? 'â  Over budget' : 'remaining';
+  el('cBalance').textContent = 'Ã¢ÂÂ¹' + fmt(Math.abs(balance));
+  el('cBalSub').textContent  = balance < 0 ? 'Ã¢ÂÂ  Over budget' : 'remaining';
 
   const pctEl = el('cPct');
   pctEl.textContent = pctUsed.toFixed(1) + '%';
@@ -710,13 +729,13 @@ async function submitExpense() {
 
   if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbySPIe3CHzPg2HVB0yz6VToWfMmo8kPVkvkbIO_s4WF0T-5DXCeJaCFl2zEoN8I0Os/exec') {
     el('submitStatus').style.color = 'var(--amber)';
-    el('submitStatus').textContent = 'Apps Script not yet configured â opening Google Sheet for manual entryâ¦';
+    el('submitStatus').textContent = 'Apps Script not yet configured Ã¢ÂÂ opening Google Sheet for manual entryÃ¢ÂÂ¦';
     setTimeout(() => window.open('https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/edit', '_blank'), 1200);
     return;
   }
 
   el('submitStatus').style.color = 'var(--green)';
-  el('submitStatus').textContent = 'Submittingâ¦';
+  el('submitStatus').textContent = 'SubmittingÃ¢ÂÂ¦';
 
   try {
     const res  = await fetch(APPS_SCRIPT_URL, {
@@ -726,7 +745,7 @@ async function submitExpense() {
     });
     const json = await res.json();
     if (json.success) {
-      el('submitStatus').textContent = 'â Expense added to the sheet!';
+      el('submitStatus').textContent = 'Ã¢ÂÂ Expense added to the sheet!';
       setTimeout(() => { closeModal(); loadData(); }, 1600);
     } else {
       throw new Error(json.error || 'Unknown error');
