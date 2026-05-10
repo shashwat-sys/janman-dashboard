@@ -278,11 +278,11 @@
 <header>
   <div>
     <div class="brand">Janman People's Foundation</div>
-    <h1>Finance Dashboard ÃÂ¢ÃÂÃÂ Jan Nyay Abhiyan &amp; DLF</h1>
+    <h1>Finance Dashboard — Jan Nyay Abhiyan &amp; DLF</h1>
   </div>
   <div class="hdr-right">
     <span class="hdr-ts" id="lastUpdated"></span>
-    <button class="hdr-btn" onclick="loadData()">ÃÂ¢ÃÂÃÂ» Refresh</button>
+    <button class="hdr-btn" onclick="loadData()">ÃÂ↻ Refresh</button>
     <button class="hdr-btn" onclick="openModal()">+ Add Expense</button>
   </div>
 </header>
@@ -303,22 +303,22 @@
     <div class="cards">
       <div class="card c-budget">
         <div class="c-label">Total Budget</div>
-        <div class="c-value" id="cBudget">ÃÂ¢ÃÂÃÂ</div>
-        <div class="c-sub" id="cPeriod">ÃÂ¢ÃÂÃÂ</div>
+        <div class="c-value" id="cBudget">—</div>
+        <div class="c-sub" id="cPeriod">—</div>
       </div>
       <div class="card c-spent">
         <div class="c-label">Total Spent</div>
-        <div class="c-value" id="cSpent">ÃÂ¢ÃÂÃÂ</div>
-        <div class="c-sub" id="cSpentSub">ÃÂ¢ÃÂÃÂ</div>
+        <div class="c-value" id="cSpent">—</div>
+        <div class="c-sub" id="cSpentSub">—</div>
       </div>
       <div class="card c-balance">
         <div class="c-label">Balance Remaining</div>
-        <div class="c-value" id="cBalance">ÃÂ¢ÃÂÃÂ</div>
-        <div class="c-sub" id="cBalSub">ÃÂ¢ÃÂÃÂ</div>
+        <div class="c-value" id="cBalance">—</div>
+        <div class="c-sub" id="cBalSub">—</div>
       </div>
       <div class="card c-pct">
         <div class="c-label">Budget Utilised</div>
-        <div class="c-value" id="cPct">ÃÂ¢ÃÂÃÂ</div>
+        <div class="c-value" id="cPct">—</div>
         <div class="c-sub">90% = funder target</div>
       </div>
     </div>
@@ -341,9 +341,9 @@
         <thead>
           <tr>
             <th>Expense Head</th>
-            <th class="num">Budget (ÃÂ¢ÃÂÃÂ¹)</th>
-            <th class="num">Spent (ÃÂ¢ÃÂÃÂ¹)</th>
-            <th class="num">Balance (ÃÂ¢ÃÂÃÂ¹)</th>
+            <th class="num">Budget (₹)</th>
+            <th class="num">Spent (₹)</th>
+            <th class="num">Balance (₹)</th>
             <th>Progress</th>
             <th>Status</th>
           </tr>
@@ -390,7 +390,7 @@
         <input type="date" id="fDate" />
       </div>
       <div class="fg">
-        <label>Amount (ÃÂ¢ÃÂÃÂ¹)</label>
+        <label>Amount (₹)</label>
         <input type="number" id="fAmount" placeholder="0" min="0" />
       </div>
     </div>
@@ -433,12 +433,12 @@
 
 <script>
 // ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ
-// ÃÂ¢ÃÂÃÂ  CONFIGURATION ÃÂ¢ÃÂÃÂ update APPS_SCRIPT_URL after deploy    ÃÂ¢ÃÂÃÂ
+// ÃÂ¢ÃÂÃÂ  CONFIGURATION — update APPS_SCRIPT_URL after deploy    ÃÂ¢ÃÂÃÂ
 // ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbylXVOOYVNKmLD6UfQiDLHCtB1NZgqJkLwOn3WIlTsXXmJcMgWxdDjgHGrWD0Yycafq/exec';
 const SHEET_ID        = '12xfuCqcdNQupjBXsvF8ssg0mmxIp-qepP3mR2MgmugI';
 
-// Budget figures ÃÂ¢ÃÂÃÂ edit here to match approved grant budgets
+// Budget figures — edit here to match approved grant budgets
 const BUDGETS = {
   'Jan Nyay Abhiyan': {
     all: {
@@ -539,7 +539,7 @@ async function loadData() {
 
     allExpenses = data;
     document.getElementById('lastUpdated').textContent =
-      'Live ÃÂÃÂ· updated ' + new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+      'Live · updated ' + new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
     document.getElementById('yearFilter').style.display = 'flex';
     renderDashboard();
     document.getElementById('loadingState').style.display = 'none';
@@ -549,7 +549,7 @@ async function loadData() {
     document.getElementById('errorBanner').textContent =
       'Could not load data: ' + err.message +
       (APPS_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbySPIe3CHzPg2HVB0yz6VToWfMmo8kPVkvkbIO_s4WF0T-5DXCeJaCFl2zEoN8I0Os/exec'
-        ? ' ÃÂ¢ÃÂÃÂ Please deploy the Apps Script and update APPS_SCRIPT_URL in this file.'
+        ? ' — Please deploy the Apps Script and update APPS_SCRIPT_URL in this file.'
         : '');
     document.getElementById('errorBanner').style.display = 'block';
     allExpenses = [];
@@ -622,11 +622,11 @@ function renderDashboard() {
   const balance     = totalBudget - totalSpent;
   const pctUsed     = totalBudget > 0 ? (totalSpent / totalBudget * 100) : 0;
 
-  el('cBudget').textContent  = 'ÃÂ¢ÃÂÃÂ¹' + fmt(totalBudget);
+  el('cBudget').textContent  = '₹' + fmt(totalBudget);
   el('cPeriod').textContent  = cfg.period;
-  el('cSpent').textContent   = 'ÃÂ¢ÃÂÃÂ¹' + fmt(totalSpent);
+  el('cSpent').textContent   = '₹' + fmt(totalSpent);
   el('cSpentSub').textContent= pctUsed.toFixed(1) + '% of approved budget';
-  el('cBalance').textContent = 'ÃÂ¢ÃÂÃÂ¹' + fmt(Math.abs(balance));
+  el('cBalance').textContent = '₹' + fmt(Math.abs(balance));
   el('cBalSub').textContent  = balance < 0 ? 'ÃÂ¢ÃÂÃÂ  Over budget' : 'remaining';
 
   const pctEl = el('cPct');
@@ -844,7 +844,7 @@ async function submitExpense() {
 
   if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbySPIe3CHzPg2HVB0yz6VToWfMmo8kPVkvkbIO_s4WF0T-5DXCeJaCFl2zEoN8I0Os/exec') {
     el('submitStatus').style.color = 'var(--amber)';
-    el('submitStatus').textContent = 'Apps Script not yet configured ÃÂ¢ÃÂÃÂ opening Google Sheet for manual entryÃÂ¢ÃÂÃÂ¦';
+    el('submitStatus').textContent = 'Apps Script not yet configured — opening Google Sheet for manual entryÃÂ¢ÃÂÃÂ¦';
     setTimeout(() => window.open('https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/edit', '_blank'), 1200);
     return;
   }
