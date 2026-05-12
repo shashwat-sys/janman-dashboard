@@ -329,6 +329,7 @@
       <button class="yr-btn active" id="yr-all" onclick="setYear('all')">All Years</button>
       <button class="yr-btn" id="yr-y1" onclick="setYear('y1')">Year 1 &nbsp;Jul 2024–Jun 2025</button>
       <button class="yr-btn" id="yr-y2" onclick="setYear('y2')">Year 2 &nbsp;Jul 2025–Jun 2026</button>
+      <button class="yr-btn" id="yr-y3" onclick="setYear('y3')">Year 3 &nbsp;Jul 2026–Jun 2027</button>
     </div>
 
     <!-- Budget vs Actual Table -->
@@ -442,39 +443,51 @@ const SHEET_ID        = '12xfuCqcdNQupjBXsvF8ssg0mmxIp-qepP3mR2MgmugI';
 const BUDGETS = {
   'Jan Nyay Abhiyan': {
     all: {
-      label: 'Jan Nyay Abhiyan — All Years', period: 'Jul 2024 – Jun 2026',
-      total: 5996000,
+      label: 'Jan Nyay Abhiyan — All Years', period: 'Jul 2024 – Jun 2027',
+      total: 6000000,
       heads: {
-        'Salary/Honrarium':        { budget: 2061000, label: 'Salary & Honorarium (Program)' },
-        'Admin Staff':             { budget:  428400, label: 'Admin Staff' },
+        'Salary/Honrarium':        { budget: 2932200, label: 'Salary & Honorarium (Program)' },
+        'Admin Staff':             { budget:  646200, label: 'Admin Staff' },
         'Cap Ex':                  { budget:   63000, label: 'Capital Expenditure' },
-        'Travel/Boarding/Lodging': { budget:  249900, label: 'Travel & Lodging' },
-        'Program Expense':         { budget: 1800000, label: 'Program Expense' },
-        'Administration Cost':     { budget: 1393700, label: 'Administration Cost' },
+        'Travel/Boarding/Lodging': { budget:  402045, label: 'Travel & Lodging' },
+        'Program Expense':         { budget: 1404824, label: 'Program Expense' },
+        'Administration Cost':     { budget:  551731, label: 'Administration Cost' },
       }
     },
     y1: {
       label: 'Jan Nyay Abhiyan — Year 1', period: 'Jul 2024 – Jun 2025',
-      total: 2998000,
+      total: 2002750,
       heads: {
-        'Salary/Honrarium':        { budget: 1170000, label: 'Salary & Honorarium (Program)' },
-        'Admin Staff':             { budget:  204000, label: 'Admin Staff' },
-        'Cap Ex':                  { budget:   63000, label: 'Capital Expenditure' },
-        'Travel/Boarding/Lodging': { budget:  105000, label: 'Travel & Lodging' },
-        'Program Expense':         { budget:  800000, label: 'Program Expense' },
-        'Administration Cost':     { budget:  656000, label: 'Administration Cost' },
+        'Salary/Honrarium':        { budget: 1170000 },
+        'Admin Staff':             { budget:  204000 },
+        'Cap Ex':                  { budget:   63000 },
+        'Travel/Boarding/Lodging': { budget:  105000 },
+        'Program Expense':         { budget:  262000 },
+        'Administration Cost':     { budget:  198750 },
       }
     },
     y2: {
       label: 'Jan Nyay Abhiyan — Year 2', period: 'Jul 2025 – Jun 2026',
-      total: 2998000,
+      total: 2046102,
       heads: {
-        'Salary/Honrarium':        { budget:  891000, label: 'Salary & Honorarium (Program)' },
-        'Admin Staff':             { budget:  224400, label: 'Admin Staff' },
-        'Cap Ex':                  { budget:       0, label: 'Capital Expenditure' },
-        'Travel/Boarding/Lodging': { budget:  144900, label: 'Travel & Lodging' },
-        'Program Expense':         { budget: 1000000, label: 'Program Expense' },
-        'Administration Cost':     { budget:  737700, label: 'Administration Cost' },
+        'Salary/Honrarium':        { budget:  891000 },
+        'Admin Staff':             { budget:  224400 },
+        'Cap Ex':                  { budget:       0 },
+        'Travel/Boarding/Lodging': { budget:  144900 },
+        'Program Expense':         { budget:  572725 },
+        'Administration Cost':     { budget:  213077 },
+      }
+    },
+    y3: {
+      label: 'Jan Nyay Abhiyan — Year 3', period: 'Jul 2026 – Jun 2027',
+      total: 1951149,
+      heads: {
+        'Salary/Honrarium':        { budget:  871200 },
+        'Admin Staff':             { budget:  217800 },
+        'Cap Ex':                  { budget:       0 },
+        'Travel/Boarding/Lodging': { budget:  152145 },
+        'Program Expense':         { budget:  570099 },
+        'Administration Cost':     { budget:  139905 },
       }
     }
   },
@@ -483,11 +496,11 @@ const BUDGETS = {
       label: 'District Legal Fellowship', period: 'Mar 2025 – Mar 2026',
       total: 2998000,
       heads: {
-        'Salary/Honrarium':        { budget: 2436000, label: 'Salary & Honorarium' },
-        'Travel/Boarding/Lodging': { budget:  240000, label: 'Travel & Lodging' },
-        'Program Expense':         { budget:  322000, label: 'Program Expense' },
-        'Administration Cost':     { budget:       0, label: 'Administration Cost' },
-        'Cap Ex':                  { budget:       0, label: 'Capital Expenditure' },
+        'Salary/Honrarium':        { budget: 2436000 },
+        'Travel/Boarding/Lodging': { budget:  240000 },
+        'Program Expense':         { budget:  322000 },
+        'Administration Cost':     { budget:       0 },
+        'Cap Ex':                  { budget:       0 },
       }
     },
     y1: null, y2: null
@@ -604,7 +617,8 @@ function renderDashboard() {
   const cfg = (yBudgets[activeYear] || yBudgets.all);
   let filtered = allExpenses.filter(e => normalizeProject(e.project) === activeProject);
   if (activeYear === 'y1') filtered = filtered.filter(e => { const d = parseDate(e.date); return d && d < new Date('2025-07-01'); });
-  else if (activeYear === 'y2') filtered = filtered.filter(e => { const d = parseDate(e.date); return d && d >= new Date('2025-07-01'); });
+  else if (activeYear === 'y2') filtered = filtered.filter(e => { const d = parseDate(e.date); return d && d >= new Date('2025-07-01') && d < new Date('2026-07-01'); });
+      else if (activeYear === 'y3') filtered = filtered.filter(e => { const d = parseDate(e.date); return d && d >= new Date('2026-07-01'); });
 
   const spentMap = {};
   filtered.forEach(e => {
