@@ -781,7 +781,8 @@ function renderProgBreakdown(filtered) {
   const tbody = el('progTbody');
   const hint  = el('progHint');
   tbody.innerHTML = '';
-  const progTxns = filteredValid.filter(e => (e.head || '').trim() === 'Program Expense');
+  const _pNow = new Date(); _pNow.setHours(0,0,0,0);
+  const progTxns = filtered.filter(e => { const _pd = parseDate(e.date); return (e.head || '').trim() === 'Program Expense' && (!_pd || _pd <= _pNow); });
   if (!progTxns.length) { panel.style.display = 'none'; return; }
   const cats = {};
   progTxns.forEach(e => {
