@@ -270,7 +270,14 @@
       .container { padding: 1rem; }
       th, td { padding: 0.5rem 0.6rem; }
     }
-  </style>
+  .txn-future { border-left: 3px solid #f39c12 !important; background: #fffbf0 !important; }
+.future-tag { display:inline-block; background:#f39c12; color:#fff; font-size:10px; font-weight:700;
+  padding:1px 5px; border-radius:3px; margin-left:6px; vertical-align:middle; letter-spacing:.3px; }
+.future-warn { background:#fff3cd; border:1px solid #f39c12; border-radius:6px;
+  padding:8px 14px; margin-bottom:10px; font-size:13px; color:#7d4e00;
+  display:flex; align-items:center; gap:8px; }
+.future-warn strong { font-weight:700; }
+</style>
 </head>
 <body>
 
@@ -725,16 +732,25 @@ function renderDashboard() {
   renderProgBreakdown(filtered);
 
   // Transactions
+  const _now = new Date(); _now.setHours(0,0,0,0);
+  const _futureCnt = filtered.filter(e => { var _d = parseDate(e.date); return _d && _d > _now; }).length;
   const sorted = [...filtered].sort((a, b) => parseDate(b.date) - parseDate(a.date));
   el('txnCount').textContent = 'Showing ' + Math.min(sorted.length, 25) + ' of ' + sorted.length + ' transactions';
 
   const txnList = el('txnList');
   txnList.innerHTML = '';
+  if (_futureCnt > 0) {
+    var _w = document.createElement('div');
+    _w.className = 'future-warn';
+    _w.innerHTML = '<span>&#9888;</span><span><strong>' + _futureCnt + ' entr' + (_futureCnt===1?'y':'ies') + ' in this view have future payment dates</strong> &mdash; recorded ahead of today. Verify these in the source sheet.</span>';
+    txnList.appendChild(_w);
+  }
   sorted.slice(0, 25).forEach(e => {
     const div = document.createElement('div');
     div.className = 'txn-row';
+    if (isFutureDate(e.date)) div.classList.add('txn-future');
     div.innerHTML = `
-      <div class="txn-date">${fmtDisplayDate(e.date)}</div>
+      <div class="txn-date">${fmtDisplayDate(e.date)}${isFutureDate(e.date) ? '<span class="future-tag">&#9888; Future Date</span>' : ''}</div>
       <div class="txn-body">
         <div class="txn-name">${escHtml(e.narration)}</div>
         ${e.remark ? `<div class="txn-meta">${escHtml(e.remark)}</div>` : ''}
@@ -816,6 +832,9 @@ function fmtDisplayDate(str) {
     return new Date(y + '-' + p[1] + '-' + p[0]);
   }
   return new Date(str);
+}
+function isFutureDate(str) {
+  var d = parseDate(str); var now = new Date(); now.setHours(0,0,0,0); return d && d > now;
 }
 
 function escHtml(s) {
