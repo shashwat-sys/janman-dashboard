@@ -627,8 +627,10 @@ function renderDashboard() {
   else if (activeYear === 'y2') filtered = filtered.filter(e => { const d = parseDate(e.date); return d && d >= new Date('2025-07-01') && d < new Date('2026-07-01'); });
       else if (activeYear === 'y3') filtered = filtered.filter(e => { const d = parseDate(e.date); return d && d >= new Date('2026-07-01'); });
 
+  const _calNow = new Date(); _calNow.setHours(0,0,0,0);
+  const filteredValid = filtered.filter(e => { const _d = parseDate(e.date); return !_d || _d <= _calNow; });
   const spentMap = {};
-  filtered.forEach(e => {
+  filteredValid.forEach(e => {
     const h = (e.head || '').trim();
     let amt = e.amount;
     if ((h === 'Salary/Honrarium' || h === 'Admin Staff') &&
@@ -779,7 +781,7 @@ function renderProgBreakdown(filtered) {
   const tbody = el('progTbody');
   const hint  = el('progHint');
   tbody.innerHTML = '';
-  const progTxns = filtered.filter(e => (e.head || '').trim() === 'Program Expense');
+  const progTxns = filteredValid.filter(e => (e.head || '').trim() === 'Program Expense');
   if (!progTxns.length) { panel.style.display = 'none'; return; }
   const cats = {};
   progTxns.forEach(e => {
