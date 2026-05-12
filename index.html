@@ -656,7 +656,7 @@ function renderDashboard() {
   allHeads.forEach(head => {
     const hCfg    = cfg.heads[head];
     const budget  = hCfg ? hCfg.budget : 0;
-    const label   = hCfg ? hCfg.label  : head;
+    const label   = (hCfg && hCfg.label) ? hCfg.label : head;
     const spent   = spentMap[head] || 0;
     const bal     = budget - spent;
     const pct     = budget > 0 ? Math.min(spent / budget * 100, 100) : (spent > 0 ? 100 : 0);
