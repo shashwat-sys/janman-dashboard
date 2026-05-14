@@ -1,940 +1,453 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Janman Finance Dashboard</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
-  <style>
-    :root {
-      --green:       #1a5c38;
-      --green-light: #2e7d52;
-      --amber:       #d97706;
-      --red:         #dc2626;
-      --blue:        #2563eb;
-      --bg:          #f3f6f4;
-      --card:        #ffffff;
-      --border:      #e5e7eb;
-      --text:        #111827;
-      --muted:       #6b7280;
-    }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Janman Finance Dashboard</title>
+<style>
+  :root {
+    --green:        #1a5c38;
+    --green-light:  #2e7d52;
+    --green-pale:   #e8f5ee;
+    --amber:        #d97706;
+    --amber-pale:   #fffbeb;
+    --red:          #dc2626;
+    --red-pale:     #fef2f2;
+    --blue:         #1e40af;
+    --blue-pale:    #eff6ff;
+    --gray-50:      #f9fafb;
+    --gray-100:     #f3f4f6;
+    --gray-200:     #e5e7eb;
+    --gray-500:     #6b7280;
+    --gray-700:     #374151;
+    --gray-900:     #111827;
+    --card:         #ffffff;
+    --shadow:       0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.05);
+    --radius:       10px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--gray-50); color: var(--gray-900); font-size: 14px; }
+  
+  /* Header */
+  .header { background: var(--green); color: #fff; padding: 16px 24px; display: flex; align-items: center; gap: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+  .header-logo { width: 44px; height: 44px; background: rgba(255,255,255,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 700; }
+  .header-title { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; }
+  .header-sub { font-size: 12px; opacity: 0.8; margin-top: 2px; }
+  .header-badge { margin-left: auto; background: rgba(255,255,255,0.2); border-radius: 20px; padding: 4px 12px; font-size: 12px; }
 
-    /* ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ Header ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ */
-    header {
-      background: var(--green);
-      color: #fff;
-      padding: 0.9rem 1.5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-    header .brand { font-size: 0.7rem; opacity: 0.75; letter-spacing: 0.08em; text-transform: uppercase; }
-    header h1 { font-size: 1.1rem; font-weight: 700; margin-top: 2px; }
-    header .hdr-right { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
-    .hdr-ts { font-size: 0.72rem; opacity: 0.7; }
-    .hdr-btn {
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.35);
-      color: #fff;
-      padding: 0.35rem 0.9rem;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 0.82rem;
-      font-weight: 500;
-      white-space: nowrap;
-    }
-    .hdr-btn:hover { background: rgba(255,255,255,0.25); }
-    .year-filter {
-      display: flex; align-items: center; gap: 0.5rem;
-      padding: 0.45rem 1.5rem; background: var(--card);
-      border-bottom: 1px solid var(--border); flex-wrap: wrap;
-    }
-    .year-filter span { font-size: 0.78rem; color: var(--muted); }
-    .yr-btn {
-      padding: 0.2rem 0.7rem; border: 1px solid var(--border);
-      border-radius: 20px; background: transparent; cursor: pointer;
-      font-size: 0.76rem; color: var(--text);
-    }
-    .yr-btn.active { background: var(--green); color: #fff; border-color: var(--green); font-weight: 600; }
+  /* Main layout */
+  .container { max-width: 1100px; margin: 0 auto; padding: 24px 16px; }
 
-    /* ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ Tabs ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ */
-    .tabs {
-      background: #fff;
-      border-bottom: 2px solid var(--border);
-      padding: 0 1.5rem;
-      display: flex;
-    }
-    .tab {
-      padding: 0.75rem 1.25rem;
-      font-size: 0.88rem;
-      font-weight: 500;
-      color: var(--muted);
-      cursor: pointer;
-      border-bottom: 3px solid transparent;
-      margin-bottom: -2px;
-      transition: color 0.15s;
-    }
-    .tab.active { color: var(--green); border-bottom-color: var(--green); }
-    .tab:hover:not(.active) { color: var(--text); }
+  /* Project tabs */
+  .project-tabs { display: flex; gap: 8px; margin-bottom: 20px; }
+  .proj-tab { padding: 10px 24px; border-radius: 8px; border: 2px solid var(--gray-200); background: var(--card); color: var(--gray-700); font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+  .proj-tab.active { background: var(--green); border-color: var(--green); color: #fff; }
+  .proj-tab:hover:not(.active) { border-color: var(--green); color: var(--green); }
 
-    /* ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ Container ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ */
-    .container { padding: 1.25rem 1.5rem; max-width: 1200px; margin: 0 auto; }
+  /* Year selector */
+  .year-bar { display: flex; gap: 6px; align-items: center; margin-bottom: 20px; flex-wrap: wrap; }
+  .year-bar-label { font-size: 12px; color: var(--gray-500); font-weight: 600; margin-right: 4px; }
+  .yr-btn { padding: 6px 16px; border-radius: 20px; border: 1.5px solid var(--gray-200); background: var(--card); color: var(--gray-700); font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+  .yr-btn.active { background: var(--green-pale); border-color: var(--green); color: var(--green); }
+  .yr-btn:hover:not(.active) { border-color: var(--green-light); color: var(--green-light); }
 
-    /* ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ Summary Cards ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ */
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1rem;
-      margin-bottom: 1.25rem;
-    }
-    .card {
-      background: var(--card);
-      border-radius: 10px;
-      padding: 1.1rem 1.25rem;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.07);
-      border-top: 4px solid transparent;
-    }
-    .card.c-budget  { border-top-color: var(--green); }
-    .card.c-spent   { border-top-color: var(--amber); }
-    .card.c-balance { border-top-color: var(--blue); }
-    .card.c-pct     { border-top-color: var(--red); }
-    .card .c-label  { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 600; margin-bottom: 0.35rem; }
-    .card .c-value  { font-size: 1.45rem; font-weight: 800; }
-    .card .c-sub    { font-size: 0.72rem; color: var(--muted); margin-top: 0.2rem; }
+  /* Summary cards */
+  .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
+  @media (max-width: 700px) { .cards { grid-template-columns: repeat(2, 1fr); } }
+  .card { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); padding: 16px; border-left: 4px solid transparent; }
+  .card.budget { border-color: var(--blue); }
+  .card.spent  { border-color: var(--green); }
+  .card.balance { border-color: var(--amber); }
+  .card.pct { border-color: var(--green-light); }
+  .card-label { font-size: 11px; font-weight: 600; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.5px; }
+  .card-value { font-size: 22px; font-weight: 700; margin-top: 4px; color: var(--gray-900); }
+  .card-sub { font-size: 11px; color: var(--gray-500); margin-top: 2px; }
 
-    /* ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ Budget Table ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ */
-    .panel {
-      background: var(--card);
-      border-radius: 10px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.07);
-      margin-bottom: 1.25rem;
-      overflow: hidden;
-    }
-    .panel-header {
-      padding: 1rem 1.25rem 0.75rem;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .panel-title { font-size: 0.9rem; font-weight: 700; }
-    .panel-hint  { font-size: 0.72rem; color: var(--muted); }
-    table { width: 100%; border-collapse: collapse; }
-    th {
-      text-align: left;
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      padding: 0.55rem 1rem;
-      background: #f9fafb;
-      border-bottom: 1px solid var(--border);
-    }
-    td { padding: 0.65rem 1rem; border-bottom: 1px solid var(--border); font-size: 0.85rem; vertical-align: middle; }
-    tr:last-child td { border-bottom: none; }
-    tr.total-row td { font-weight: 700; background: #f9fafb; }
-    .num { text-align: right; font-variant-numeric: tabular-nums; }
+  /* Panel */
+  .panel { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 20px; overflow: hidden; }
+  .panel-header { padding: 14px 18px; border-bottom: 1px solid var(--gray-100); display: flex; align-items: center; justify-content: space-between; }
+  .panel-title { font-size: 14px; font-weight: 700; color: var(--gray-900); }
+  .panel-note { font-size: 11px; color: var(--gray-500); }
 
-    /* ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ Progress bar ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ */
-    .bar-wrap { min-width: 130px; }
-    .bar-track {
-      height: 8px;
-      background: #e5e7eb;
-      border-radius: 4px;
-      position: relative;
-      overflow: visible;
-    }
-    .bar-fill { height: 100%; border-radius: 4px; }
-    .bar-marker {
-      position: absolute;
-      top: -5px;
-      width: 2px;
-      height: 18px;
-      background: #ef4444;
-      border-radius: 1px;
-      left: 90%;
-    }
-    .bar-marker::after {
-      content: '90%';
-      position: absolute;
-      top: -14px;
-      left: 3px;
-      font-size: 0.6rem;
-      color: #ef4444;
-      white-space: nowrap;
-    }
-    .bar-pct { font-size: 0.7rem; color: var(--muted); margin-top: 3px; }
+  /* Budget table */
+  .budget-table { width: 100%; border-collapse: collapse; }
+  .budget-table th { padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 700; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.4px; background: var(--gray-50); border-bottom: 1px solid var(--gray-200); }
+  .budget-table th:not(:first-child) { text-align: right; }
+  .budget-table td { padding: 11px 14px; border-bottom: 1px solid var(--gray-100); vertical-align: middle; }
+  .budget-table td:not(:first-child) { text-align: right; font-family: 'Courier New', monospace; font-size: 13px; }
+  .budget-table tr:hover td { background: var(--gray-50); }
+  .budget-table tr.total-row td { font-weight: 700; background: var(--gray-50); border-top: 2px solid var(--gray-200); border-bottom: none; }
+  .head-name { font-weight: 600; color: var(--gray-900); }
+  .zero-budget { color: var(--gray-500); }
 
-    /* ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ Chips ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ */
-    .chip {
-      display: inline-block;
-      padding: 0.15rem 0.55rem;
-      border-radius: 999px;
-      font-size: 0.72rem;
-      font-weight: 700;
-    }
-    .chip-green  { background: #d1fae5; color: #065f46; }
-    .chip-amber  { background: #fef3c7; color: #92400e; }
-    .chip-red    { background: #fee2e2; color: #991b1b; }
-    .chip-gray   { background: #f3f4f6; color: #6b7280; }
+  /* Progress bar in table */
+  .bar-wrap { display: flex; align-items: center; gap: 8px; }
+  .bar-outer { flex: 1; height: 6px; background: var(--gray-200); border-radius: 3px; min-width: 60px; }
+  .bar-inner { height: 6px; border-radius: 3px; transition: width 0.3s; }
+  .bar-green { background: var(--green-light); }
+  .bar-amber { background: var(--amber); }
+  .bar-red   { background: var(--red); }
+  .pct-label { font-size: 11px; font-weight: 600; min-width: 38px; text-align: right; }
 
-    /* ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ Transactions ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ */
-    .txn-row {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.75rem;
-      padding: 0.65rem 1.25rem;
-      border-bottom: 1px solid var(--border);
-    }
-    .txn-row:last-child { border-bottom: none; }
-    .txn-date { font-size: 0.75rem; color: var(--muted); min-width: 62px; padding-top: 1px; }
-    .txn-body { flex: 1; }
-    .txn-name { font-size: 0.85rem; }
-    .txn-meta { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
-    .txn-badge { font-size: 0.7rem; background: #f3f4f6; color: #374151; padding: 0.1rem 0.45rem; border-radius: 4px; }
-    .txn-amt { font-size: 0.9rem; font-weight: 700; color: var(--red); white-space: nowrap; }
+  /* Transactions */
+  .txn-table { width: 100%; border-collapse: collapse; }
+  .txn-table th { padding: 9px 14px; text-align: left; font-size: 11px; font-weight: 700; color: var(--gray-500); text-transform: uppercase; background: var(--gray-50); border-bottom: 1px solid var(--gray-200); }
+  .txn-table td { padding: 9px 14px; border-bottom: 1px solid var(--gray-100); font-size: 13px; }
+  .txn-table tr:hover td { background: var(--gray-50); }
+  .txn-amt { text-align: right; font-family: 'Courier New', monospace; font-weight: 600; color: var(--gray-900); }
+  .txn-date { color: var(--gray-500); font-size: 12px; white-space: nowrap; }
+  .head-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+  .hb-salary { background: var(--blue-pale); color: var(--blue); }
+  .hb-travel { background: #f0fdf4; color: #166534; }
+  .hb-program { background: #fef9c3; color: #854d0e; }
+  .hb-admin  { background: var(--gray-100); color: var(--gray-700); }
+  .hb-capex  { background: #fdf4ff; color: #86198f; }
 
-    /* ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ FAB ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ */
-    .fab {
-      position: fixed;
-      bottom: 1.75rem;
-      right: 1.75rem;
-      background: var(--green);
-      color: #fff;
-      border: none;
-      width: 3.25rem;
-      height: 3.25rem;
-      border-radius: 50%;
-      font-size: 1.6rem;
-      line-height: 1;
-      cursor: pointer;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.25);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 90;
-    }
-    .fab:hover { background: var(--green-light); }
-
-    /* ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ Modal ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ */
-    .overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.45);
-      z-index: 200;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
-    }
-    .overlay.open { display: flex; }
-    .modal {
-      background: #fff;
-      border-radius: 12px;
-      padding: 1.75rem;
-      width: 460px;
-      max-width: 100%;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-    }
-    .modal h2 { font-size: 1rem; font-weight: 700; margin-bottom: 1.25rem; }
-    .fg { margin-bottom: 0.9rem; }
-    .fg label { display: block; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 0.3rem; }
-    .fg input, .fg select {
-      width: 100%;
-      padding: 0.55rem 0.75rem;
-      border: 1px solid var(--border);
-      border-radius: 7px;
-      font-size: 0.88rem;
-      outline: none;
-      color: var(--text);
-    }
-    .fg input:focus, .fg select:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(26,92,56,0.12); }
-    .fg-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
-    .modal-actions { display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.25rem; }
-    .btn-cancel { padding: 0.55rem 1.1rem; border: 1px solid var(--border); background: #fff; border-radius: 7px; cursor: pointer; font-size: 0.85rem; }
-    .btn-submit { padding: 0.55rem 1.4rem; background: var(--green); color: #fff; border: none; border-radius: 7px; cursor: pointer; font-size: 0.85rem; font-weight: 700; }
-    .btn-submit:hover { background: var(--green-light); }
-    .submit-status { font-size: 0.82rem; margin-top: 0.5rem; min-height: 1.2em; }
-
-    /* ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ Loading / error ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ */
-    .loading { text-align: center; padding: 3rem 1rem; color: var(--muted); font-size: 0.9rem; }
-    .err-banner { background: #fee2e2; border: 1px solid #fca5a5; color: #991b1b; padding: 0.75rem 1rem; border-radius: 8px; font-size: 0.82rem; margin-bottom: 1rem; }
-
-    @media (max-width: 700px) {
-      .cards { grid-template-columns: 1fr 1fr; }
-      .container { padding: 1rem; }
-      th, td { padding: 0.5rem 0.6rem; }
-    }
-  .txn-future { border-left: 3px solid #f39c12 !important; background: #fffbf0 !important; }
-.future-tag { display:inline-block; background:#f39c12; color:#fff; font-size:10px; font-weight:700;
-  padding:1px 5px; border-radius:3px; margin-left:6px; vertical-align:middle; letter-spacing:.3px; }
-.future-warn { background:#fff3cd; border:1px solid #f39c12; border-radius:6px;
-  padding:8px 14px; margin-bottom:10px; font-size:13px; color:#7d4e00;
-  display:flex; align-items:center; gap:8px; }
-.future-warn strong { font-weight:700; }
+  /* Loading / error */
+  .loading { text-align: center; padding: 48px; color: var(--gray-500); }
+  .spinner { width: 36px; height: 36px; border: 3px solid var(--gray-200); border-top-color: var(--green); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 12px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .error-box { background: var(--red-pale); border: 1px solid #fecaca; border-radius: var(--radius); padding: 16px; color: var(--red); }
+  .note-box { background: var(--amber-pale); border: 1px solid #fde68a; border-radius: 6px; padding: 10px 14px; font-size: 12px; color: #92400e; margin: 0 18px 14px; }
+  
+  /* Future badge */
+  .future-tag { font-size: 10px; background: var(--amber-pale); color: var(--amber); border-radius: 4px; padding: 1px 5px; margin-left: 4px; font-weight: 600; }
 </style>
 </head>
 <body>
-
-<!-- ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ HEADER ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ -->
-<header>
+<div class="header">
+  <div class="header-logo">J</div>
   <div>
-    <div class="brand">Janman People's Foundation</div>
-    <h1>Finance Dashboard — Jan Nyay Abhiyan &amp; DLF</h1>
+    <div class="header-title">Janman People's Foundation</div>
+    <div class="header-sub">Finance Dashboard &mdash; Budget vs Actuals</div>
   </div>
-  <div class="hdr-right">
-    <span class="hdr-ts" id="lastUpdated"></span>
-    <button class="hdr-btn" onclick="loadData()">↻ Refresh</button>
-    <button class="hdr-btn" onclick="openModal()">+ Add Expense</button>
-  </div>
-</header>
-
-<!-- ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ TABS ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ -->
-<div class="tabs">
-  <div class="tab active" id="tab-jna" onclick="switchTab('jna')">Jan Nyay Abhiyan</div>
-  <div class="tab" id="tab-dlf" onclick="switchTab('dlf')">District Legal Fellowship</div>
+  <div class="header-badge" id="lastUpdated">Loading…</div>
 </div>
 
-<!-- ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ MAIN ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ -->
 <div class="container">
-  <div id="loadingState" class="loading">Loading from Google SheetsÃÂ¢ÃÂÃÂ¦</div>
-  <div id="errorBanner" class="err-banner" style="display:none;"></div>
+  <div class="project-tabs">
+    <button class="proj-tab active" onclick="switchProject('Jan Nyay Abhiyan')">Jan Nyay Abhiyan</button>
+    <button class="proj-tab" onclick="switchProject('District Legal Fellowship')">District Legal Fellowship</button>
+  </div>
 
-  <div id="dashboard" style="display:none;">
-    <!-- Cards -->
-    <div class="cards">
-      <div class="card c-budget">
-        <div class="c-label">Total Budget</div>
-        <div class="c-value" id="cBudget">—</div>
-        <div class="c-sub" id="cPeriod">—</div>
-      </div>
-      <div class="card c-spent">
-        <div class="c-label">Total Spent</div>
-        <div class="c-value" id="cSpent">—</div>
-        <div class="c-sub" id="cSpentSub">—</div>
-      </div>
-      <div class="card c-balance">
-        <div class="c-label">Balance Remaining</div>
-        <div class="c-value" id="cBalance">—</div>
-        <div class="c-sub" id="cBalSub">—</div>
-      </div>
-      <div class="card c-pct">
-        <div class="c-label">Budget Utilised</div>
-        <div class="c-value" id="cPct">—</div>
-        <div class="c-sub">90% = funder target</div>
-      </div>
-    </div>
+  <div class="year-bar">
+    <span class="year-bar-label">YEAR</span>
+    <div id="yearButtons"></div>
+  </div>
 
-    <!-- Year Filter (JNA only) -->
-    <div class="year-filter" id="yearFilter" style="display:none;">
-      <span>View:</span>
-      <button class="yr-btn active" id="yr-all" onclick="setYear('all')">All Years</button>
-      <button class="yr-btn" id="yr-y1" onclick="setYear('y1')">Year 1 &nbsp;Jul 2024–Jun 2025</button>
-      <button class="yr-btn" id="yr-y2" onclick="setYear('y2')">Year 2 &nbsp;Jul 2025–Jun 2026</button>
-      <button class="yr-btn" id="yr-y3" onclick="setYear('y3')">Year 3 &nbsp;Jul 2026–Jun 2027</button>
-    </div>
+  <div class="cards" id="summaryCards">
+    <div class="card budget"><div class="card-label">Annual Budget</div><div class="card-value" id="cBudget">—</div><div class="card-sub" id="cBudgetSub"></div></div>
+    <div class="card spent"><div class="card-label">Spent (Gross)</div><div class="card-value" id="cSpent">—</div><div class="card-sub" id="cSpentSub"></div></div>
+    <div class="card balance"><div class="card-label">Balance</div><div class="card-value" id="cBalance">—</div><div class="card-sub" id="cBalSub"></div></div>
+    <div class="card pct"><div class="card-label">% Utilised</div><div class="card-value" id="cPct">—</div><div class="card-sub" id="cPctSub"></div></div>
+  </div>
 
-    <!-- Budget vs Actual Table -->
-    <div class="panel">
-      <div class="panel-header">
-        <span class="panel-title">Budget vs. Actual by Expense Head</span>
-        <span class="panel-hint">🔴 marker = 90% spending target (funder expectation)</span>
-      </div>
-      <table>
-        <thead>
-          <tr>
-            <th>Expense Head</th>
-            <th class="num">Budget (₹)</th>
-            <th class="num">Spent (₹)</th>
-            <th class="num">Balance (₹)</th>
-            <th>Progress</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody id="budgetTbody"></tbody>
-      </table>
-    </div>
-
-    <!-- Program Expense Breakdown -->
-  <div class="panel" id="progPanel" style="display:none;">
+  <div class="panel" id="budgetPanel">
     <div class="panel-header">
-      <span class="panel-title">Program Expense Breakdown</span>
-      <span class="panel-hint" id="progHint"></span>
+      <span class="panel-title" id="budgetPanelTitle">Budget vs Actuals</span>
+      <span class="panel-note">Consultation fees shown at gross (net ÷ 0.9 to account for 10% TDS)</span>
     </div>
-    <table>
-      <thead><tr>
-        <th>Sub-category</th><th class="num">Amount (â¹)</th><th class="num">Share</th><th>Sample transactions</th>
-      </tr></thead>
-      <tbody id="progTbody"></tbody>
+    <div class="note-box" id="noteBox" style="display:none"></div>
+    <table class="budget-table" id="budgetTable">
+      <thead><tr><th>Budget Head</th><th>Annual Budget</th><th>Spent (Gross)</th><th>Balance</th><th style="min-width:140px">Utilisation</th></tr></thead>
+      <tbody id="budgetBody"></tbody>
     </table>
   </div>
 
-  <!-- Recent Transactions -->
-    <div class="panel">
-      <div class="panel-header">
-        <span class="panel-title">Recent Transactions</span>
-        <span class="panel-hint" id="txnCount"></span>
-      </div>
-      <div id="txnList"></div>
+  <div class="panel" id="txnPanel">
+    <div class="panel-header">
+      <span class="panel-title" id="txnPanelTitle">Transactions</span>
+      <span class="panel-note" id="txnCount"></span>
     </div>
-  </div>
-</div>
-
-<!-- FAB -->
-<button class="fab" onclick="openModal()" title="Add Expense">+</button>
-
-<!-- ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ ADD EXPENSE MODAL ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ -->
-<div class="overlay" id="overlay">
-  <div class="modal">
-    <h2>Add New Expense</h2>
-    <div class="fg-row">
-      <div class="fg">
-        <label>Date</label>
-        <input type="date" id="fDate" />
-      </div>
-      <div class="fg">
-        <label>Amount (₹)</label>
-        <input type="number" id="fAmount" placeholder="0" min="0" />
-      </div>
-    </div>
-    <div class="fg">
-      <label>Description / Narration</label>
-      <input type="text" id="fNarration" placeholder="e.g. Consultation Fees Shashwat" />
-    </div>
-    <div class="fg-row">
-      <div class="fg">
-        <label>Project</label>
-        <select id="fProject">
-          <option value="Jan Nyay Abhiyan">Jan Nyay Abhiyan</option>
-          <option value="District Legal Fellowship">District Legal Fellowship</option>
-        </select>
-      </div>
-      <div class="fg">
-        <label>Expense Head</label>
-        <select id="fHead">
-          <option value="Salary/Honrarium">Salary / Honorarium</option>
-          <option value="Travel/Boarding/Lodging">Travel / Boarding / Lodging</option>
-          <option value="Program Expense">Program Expense</option>
-          <option value="Administration Cost">Administration Cost</option>
-          <option value="Admin Staff">Admin Staff</option>
-          <option value="Cap Ex">Capital Expenditure</option>
-          <option value="TDS">TDS</option>
-        </select>
-      </div>
-    </div>
-    <div class="fg">
-      <label>Remark / Period</label>
-      <input type="text" id="fRemark" placeholder="e.g. For July 2025" />
-    </div>
-    <div class="submit-status" id="submitStatus"></div>
-    <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
-      <button class="btn-submit" onclick="submitExpense()">Add to Sheet</button>
-    </div>
+    <div id="txnContent"><div class="loading"><div class="spinner"></div>Loading transactions…</div></div>
   </div>
 </div>
 
 <script>
-// ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ
-// ÃÂ¢ÃÂÃÂ  CONFIGURATION — update APPS_SCRIPT_URL after deploy    ÃÂ¢ÃÂÃÂ
-// ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbylXVOOYVNKmLD6UfQiDLHCtB1NZgqJkLwOn3WIlTsXXmJcMgWxdDjgHGrWD0Yycafq/exec';
-const SHEET_ID        = '12xfuCqcdNQupjBXsvF8ssg0mmxIp-qepP3mR2MgmugI';
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbylXVOOYVNKmLD6UfQiDLHCtB1NZgqJkLwOn3WIlTsXXmJcMgWxdDjgHGrWD0Yycafq/exec';
 
-// Budget figures — edit here to match approved grant budgets
-const BUDGETS = {
+// ── Budget data from actual Excel files (verified May 2026) ──────────────────
+const PROJECTS = {
   'Jan Nyay Abhiyan': {
-    all: {
-      label: 'Jan Nyay Abhiyan — All Years', period: 'Jul 2024 – Jun 2027',
-      total: 6000000,
-      heads: {
-        'Salary/Honrarium':        { budget: 2932200, label: 'Salary & Honorarium (Program)' },
-        'Admin Staff':             { budget:  646200, label: 'Admin Staff' },
-        'Cap Ex':                  { budget:   63000, label: 'Capital Expenditure' },
-        'Travel/Boarding/Lodging': { budget:  402045, label: 'Travel & Lodging' },
-        'Program Expense':         { budget: 1404824, label: 'Program Expense' },
-        'Administration Cost':     { budget:  551731, label: 'Administration Cost' },
-      }
-    },
-    y1: {
-      label: 'Jan Nyay Abhiyan — Year 1', period: 'Jul 2024 – Jun 2025',
-      total: 2002750,
-      heads: {
-        'Salary/Honrarium':        { budget: 1170000 },
-        'Admin Staff':             { budget:  204000 },
-        'Cap Ex':                  { budget:   63000 },
-        'Travel/Boarding/Lodging': { budget:  105000 },
-        'Program Expense':         { budget:  262000 },
-        'Administration Cost':     { budget:  198750 },
-      }
-    },
-    y2: {
-      label: 'Jan Nyay Abhiyan — Year 2', period: 'Jul 2025 – Jun 2026',
-      total: 2046102,
-      heads: {
-        'Salary/Honrarium':        { budget:  891000 },
-        'Admin Staff':             { budget:  224400 },
-        'Cap Ex':                  { budget:       0 },
-        'Travel/Boarding/Lodging': { budget:  144900 },
-        'Program Expense':         { budget:  572725 },
-        'Administration Cost':     { budget:  213077 },
-      }
-    },
-    y3: {
-      label: 'Jan Nyay Abhiyan — Year 3', period: 'Jul 2026 – Jun 2027',
-      total: 1951149,
-      heads: {
-        'Salary/Honrarium':        { budget:  871200 },
-        'Admin Staff':             { budget:  217800 },
-        'Cap Ex':                  { budget:       0 },
-        'Travel/Boarding/Lodging': { budget:  152145 },
-        'Program Expense':         { budget:  570099 },
-        'Administration Cost':     { budget:  139905 },
-      }
+    shortName: 'JNA',
+    years: [
+      { label:'Y1', name:'Year I (Jul 2024 – Jun 2025)',   start:[2024,6], end:[2025,5] },
+      { label:'Y2', name:'Year II (Jul 2025 – Jun 2026)',  start:[2025,6], end:[2026,5] },
+      { label:'Y3', name:'Year III (Jul 2026 – Jun 2027)', start:[2026,6], end:[2027,5] }
+    ],
+    budget: {
+      Y1: { salary:1374000, capex:63000, travel:105000, program:262000, admin:198750 },
+      Y2: { salary:1115400, capex:0,     travel:144900, program:572725, admin:213077 },
+      Y3: { salary:1089000, capex:0,     travel:152145, program:570099, admin:139905 }
     }
   },
   'District Legal Fellowship': {
-    all: {
-      label: 'District Legal Fellowship — All Years', period: 'Jul 2024 – Dec 2025',
-      total: 4528800,
-      heads: {
-        'Salary/Honrarium':        { budget: 3685800, label: 'Salary & Honorarium' },
-        'Travel/Boarding/Lodging': { budget:  360000, label: 'Travel & Lodging' },
-        'Program Expense':         { budget:  483000, label: 'Program Expense' },
-        'Administration Cost':     { budget:       0, label: 'Administration Cost' },
-        'Cap Ex':                  { budget:       0, label: 'Capital Expenditure' }
-      }
-    },
-    y1: {
-      label: 'District Legal Fellowship — Year 1', period: 'Jul 2024 – Jun 2025',
-      total: 2998000,
-      heads: {
-        'Salary/Honrarium':        { budget: 2436000 },
-        'Travel/Boarding/Lodging': { budget:  240000 },
-        'Program Expense':         { budget:  322000 },
-        'Administration Cost':     { budget:       0 },
-        'Cap Ex':                  { budget:       0 }
-      }
-    },
-    y2: {
-      label: 'District Legal Fellowship — Year 2', period: 'Jul 2025 – Dec 2025',
-      total: 1530800,
-      heads: {
-        'Salary/Honrarium':        { budget: 1249800 },
-        'Travel/Boarding/Lodging': { budget:  120000 },
-        'Program Expense':         { budget:  161000 },
-        'Administration Cost':     { budget:       0 },
-        'Cap Ex':                  { budget:       0 }
-      }
+    shortName: 'DLF',
+    years: [
+      { label:'Y1', name:'Year I (Jul 2024 – Jun 2025)',   start:[2024,6], end:[2025,5] },
+      { label:'Y2', name:'Year II (Jul 2025 – Dec 2025)',  start:[2025,6], end:[2025,11] }
+    ],
+    budget: {
+      Y1: { salary:2436000, capex:0, travel:240000, program:322000, admin:0 },
+      Y2: { salary:1249800, capex:0, travel:120000, program:161000, admin:0 }
     }
   }
 };
 
-// ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ State ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ
-let allExpenses = [];
-let activeProject = 'Jan Nyay Abhiyan';
-  let activeYear = 'all'; // 'all', 'y1', 'y2'
+const HEADS = [
+  { key:'salary',  label:'Salary, Honorarium & Staff Benefits' },
+  { key:'capex',   label:'Fixed Assets / CAPEX' },
+  { key:'travel',  label:'Travel, Boarding & Lodging' },
+  { key:'program', label:'Program Expenses' },
+  { key:'admin',   label:'Administration Cost' }
+];
 
-// ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ Tab switching ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ
-function switchTab(tab) {
-  activeProject = tab === 'jna' ? 'Jan Nyay Abhiyan' : 'District Legal Fellowship';
-  document.getElementById('tab-jna').classList.toggle('active', tab === 'jna');
-  document.getElementById('tab-dlf').classList.toggle('active', tab === 'dlf');
-  document.getElementById('fProject').value = activeProject;
-  document.getElementById('yearFilter').style.display = (tab === 'jna' || tab === 'dlf') ? 'flex' : 'none';
-  if (allExpenses.length) renderDashboard();
-}
-
-  function setYear(y) {
-    activeYear = y;
-    document.querySelectorAll('.yr-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('yr-' + y).classList.add('active');
-    renderDashboard();
-  }
-
-// ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ Data loading ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ
-async function loadData() {
-  document.getElementById('loadingState').style.display = 'block';
-  document.getElementById('dashboard').style.display   = 'none';
-  document.getElementById('errorBanner').style.display = 'none';
-
-  try {
-    let data;
-    if (APPS_SCRIPT_URL && APPS_SCRIPT_URL !== 'https://script.google.com/macros/s/AKfycbySPIe3CHzPg2HVB0yz6VToWfMmo8kPVkvkbIO_s4WF0T-5DXCeJaCFl2zEoN8I0Os/exec') {
-      const res  = await fetch(APPS_SCRIPT_URL);
-      const json = await res.json();
-      if (!json.success) throw new Error(json.error || 'Backend returned failure');
-      data = json.transactions;
-    } else {
-      // Fallback: CSV export (sheet must be "Anyone with link can view")
-      const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&sheet=Sheet%201`;
-      const res  = await fetch(url);
-      const text = await res.text();
-      data = parseCSV(text);
-    }
-
-    allExpenses = data;
-    document.getElementById('lastUpdated').textContent =
-      'Live · updated ' + new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
-    document.getElementById('yearFilter').style.display = 'flex';
-    renderDashboard();
-    document.getElementById('loadingState').style.display = 'none';
-    document.getElementById('dashboard').style.display   = 'block';
-  } catch (err) {
-    document.getElementById('loadingState').style.display = 'none';
-    document.getElementById('errorBanner').textContent =
-      'Could not load data: ' + err.message +
-      (APPS_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbySPIe3CHzPg2HVB0yz6VToWfMmo8kPVkvkbIO_s4WF0T-5DXCeJaCFl2zEoN8I0Os/exec'
-        ? ' — Please deploy the Apps Script and update APPS_SCRIPT_URL in this file.'
-        : '');
-    document.getElementById('errorBanner').style.display = 'block';
-    allExpenses = [];
-    renderDashboard();
-    document.getElementById('dashboard').style.display = 'block';
+// GAS head → budget key
+function mapToKey(gasHead) {
+  switch (gasHead) {
+    case 'Salary/Honrarium': case 'Admin Staff': return 'salary';
+    case 'Cap Ex':           return 'capex';
+    case 'Travel/Boarding/Lodging': return 'travel';
+    case 'Program Expense':  return 'program';
+    case 'Administration Cost': return 'admin';
+    default: return null;
   }
 }
 
-// ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ CSV parser ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ
-function parseCSV(text) {
-  const lines = text.split('\n').filter(l => l.trim());
-  const rows = [];
-  for (let i = 3; i < lines.length; i++) {  // rows 0-2 are title/metadata/header
-    const cols = splitLine(lines[i]);
-    const amt  = parseFloat((cols[3] || '').replace(/[^0-9.]/g, ''));
-    const head = (cols[5] || '').trim();
-    if (!amt || amt <= 0 || !head) continue;
-    rows.push({
-      date:      (cols[0] || '').trim(),
-      narration: (cols[1] || '').trim(),
-      amount:    amt,
-      head:      head,
-      remark:    (cols[6] || '').trim(),
-      project:   (cols[7] || '').trim()
-    });
+// Salary/consultation heads need gross-up (10% TDS deducted at source → gross = net/0.9)
+const GROSS_UP_HEADS = new Set(['Salary/Honrarium','Admin Staff']);
+
+// ── State ────────────────────────────────────────────────────────────────────
+let allTxns = [];
+let activeProj = 'Jan Nyay Abhiyan';
+let activeYear = 'Y1';
+
+// ── Date helpers ─────────────────────────────────────────────────────────────
+function parseDate(s) {
+  if (!s) return null;
+  const p = String(s).match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{2,4})/);
+  if (p) {
+    let y = parseInt(p[3]); if (y < 100) y += 2000;
+    return new Date(y, parseInt(p[2])-1, parseInt(p[1]));
   }
-  return rows;
+  const d = new Date(s);
+  return isNaN(d.getTime()) ? null : d;
 }
 
-function splitLine(line) {
-  const r = []; let cur = '', q = false;
-  for (const c of line) {
-    if (c === '"') { q = !q; continue; }
-    if (c === ',' && !q) { r.push(cur.trim()); cur = ''; continue; }
-    cur += c;
+function getYearLabel(date, projKey) {
+  if (!date) return null;
+  const m = date.getFullYear()*12 + date.getMonth();
+  for (const yr of PROJECTS[projKey].years) {
+    const s = yr.start[0]*12 + yr.start[1];
+    const e = yr.end[0]*12   + yr.end[1];
+    if (m >= s && m <= e) return yr.label;
   }
-  r.push(cur.trim());
-  return r;
+  return null;
 }
 
-// ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ Normalize project name (handle trailing spaces) ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ
-function normalizeProject(p) {
-  const s = (p || '').trim().toLowerCase();
-  if (s.includes('district legal')) return 'District Legal Fellowship';
-  if (s.includes('jan nyay'))       return 'Jan Nyay Abhiyan';
-  return p.trim();
+function isFuture(d) {
+  return d && d > new Date();
 }
 
-// ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ Render ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ
+function fmtINR(n) {
+  if (!n && n !== 0) return '—';
+  const abs = Math.abs(Math.round(n));
+  const s = abs.toString();
+  let result = s.length > 3 ? s.slice(-3) : s;
+  let rem = s.slice(0, s.length > 3 ? s.length-3 : 0);
+  while (rem.length > 2) { result = rem.slice(-2) + ',' + result; rem = rem.slice(0, -2); }
+  if (rem) result = rem + ',' + result;
+  return (n < 0 ? '−' : '') + '₹' + result;
+}
+
+function fmtDate(d) {
+  if (!d) return '—';
+  return d.getDate().toString().padStart(2,'0') + '/' +
+         (d.getMonth()+1).toString().padStart(2,'0') + '/' +
+         d.getFullYear();
+}
+
+function headBadgeClass(key) {
+  return { salary:'hb-salary', capex:'hb-capex', travel:'hb-travel', program:'hb-program', admin:'hb-admin' }[key] || 'hb-admin';
+}
+
+// ── UI helpers ───────────────────────────────────────────────────────────────
+function switchProject(proj) {
+  activeProj = proj;
+  document.querySelectorAll('.proj-tab').forEach((el,i) => {
+    el.classList.toggle('active', el.textContent === proj);
+  });
+  // Set default year
+  const firstYear = PROJECTS[proj].years[0].label;
+  activeYear = firstYear;
+  renderYearButtons();
+  renderDashboard();
+}
+
+function switchYear(yr) {
+  activeYear = yr;
+  document.querySelectorAll('.yr-btn').forEach(el => el.classList.toggle('active', el.dataset.yr === yr));
+  renderDashboard();
+}
+
+function renderYearButtons() {
+  const container = document.getElementById('yearButtons');
+  container.innerHTML = PROJECTS[activeProj].years.map(yr =>
+    `<button class="yr-btn${yr.label===activeYear?' active':''}" data-yr="${yr.label}" onclick="switchYear('${yr.label}')">${yr.label} – ${yr.name.split('(')[1]?.replace(')','')}</button>`
+  ).join('');
+}
+
 function renderDashboard() {
-  const yBudgets = BUDGETS[activeProject];
-  const cfg = (yBudgets[activeYear] || yBudgets.all);
-  let filtered = allExpenses.filter(e => normalizeProject(e.project) === activeProject);
-  if (activeYear === 'y1') filtered = filtered.filter(e => { const d = parseDate(e.date); return d && d < new Date('2025-07-01'); });
-  else if (activeYear === 'y2') { const _y2End = activeProject === 'District Legal Fellowship' ? new Date('2026-01-01') : new Date('2026-07-01'); filtered = filtered.filter(e => { const d = parseDate(e.date); return d && d >= new Date('2025-07-01') && d < _y2End; }); }
-      else if (activeYear === 'y3') filtered = filtered.filter(e => { const d = parseDate(e.date); return d && d >= new Date('2026-07-01'); });
+  if (!allTxns.length) return;
+  
+  const projCfg = PROJECTS[activeProj];
+  const yrCfg   = projCfg.years.find(y => y.label === activeYear);
+  const budget   = projCfg.budget[activeYear] || {};
+  const today    = new Date();
 
-  const _calNow = new Date(); _calNow.setHours(0,0,0,0);
-  const filteredValid = filtered.filter(e => { const _d = parseDate(e.date); return !_d || _d <= _calNow; });
-  const spentMap = {};
-  filteredValid.forEach(e => {
-    const h = (e.head || '').trim();
-    let amt = e.amount;
-    if ((h === 'Salary/Honrarium' || h === 'Admin Staff') &&
-        !e.narration.toLowerCase().includes('travel')) {
-      amt = amt / 0.9; // gross up: add back 10% TDS deducted at source
-    }
-    spentMap[h] = (spentMap[h] || 0) + amt;
+  // Filter transactions for this project + year
+  const projTxns = allTxns.filter(t => {
+    if (t.project !== activeProj) return false;
+    const d = parseDate(t.date);
+    return getYearLabel(d, activeProj) === activeYear;
   });
 
-  const totalSpent  = Object.values(spentMap).reduce((a, b) => a + b, 0);
-  const totalBudget = cfg.total;
-  const balance     = totalBudget - totalSpent;
-  const pctUsed     = totalBudget > 0 ? (totalSpent / totalBudget * 100) : 0;
+  // Separate future-dated
+  const validTxns  = projTxns.filter(t => !isFuture(parseDate(t.date)));
+  const futureTxns = projTxns.filter(t =>  isFuture(parseDate(t.date)));
 
-  el('cBudget').textContent  = '₹' + fmt(totalBudget);
-  el('cPeriod').textContent  = cfg.period;
-  el('cSpent').textContent   = '₹' + fmt(totalSpent);
-  el('cSpentSub').textContent= pctUsed.toFixed(1) + '% of approved budget';
-  el('cBalance').textContent = '₹' + fmt(Math.abs(balance));
-  el('cBalSub').textContent  = balance < 0 ? 'ÃÂ¢ÃÂÃÂ  Over budget' : 'remaining';
+  // Compute actuals by head key (gross up salary heads)
+  const actuals = {};
+  HEADS.forEach(h => actuals[h.key] = 0);
+  for (const t of validTxns) {
+    const key = mapToKey(t.head);
+    if (!key) continue;
+    let amt = parseFloat(t.amount) || 0;
+    if (GROSS_UP_HEADS.has(t.head)) amt = amt / 0.9;
+    actuals[key] = (actuals[key] || 0) + amt;
+  }
+  HEADS.forEach(h => actuals[h.key] = Math.round(actuals[h.key]));
 
-  const pctEl = el('cPct');
-  pctEl.textContent = pctUsed.toFixed(1) + '%';
-  pctEl.style.color =
-    pctUsed >= 100 ? 'var(--red)' :
-    pctUsed >=  90 ? 'var(--amber)' : '#059669';
+  // Summary cards
+  const totalBudget = HEADS.reduce((s,h) => s + (budget[h.key]||0), 0);
+  const totalSpent  = HEADS.reduce((s,h) => s + (actuals[h.key]||0), 0);
+  const totalBal    = totalBudget - totalSpent;
+  const totalPct    = totalBudget ? (totalSpent/totalBudget*100) : 0;
 
-  const tbody = el('budgetTbody');
+  document.getElementById('cBudget').textContent  = fmtINR(totalBudget);
+  document.getElementById('cBudgetSub').textContent = yrCfg.name;
+  document.getElementById('cSpent').textContent   = fmtINR(totalSpent);
+  document.getElementById('cSpentSub').textContent = `${validTxns.length} transactions`;
+  document.getElementById('cBalance').textContent  = fmtINR(totalBal);
+  document.getElementById('cBalSub').textContent   = totalBal < 0 ? 'Over budget!' : 'Remaining';
+  document.getElementById('cPct').textContent      = totalPct.toFixed(1) + '%';
+  document.getElementById('cPctSub').textContent   = `of ${fmtINR(totalBudget)}`;
+
+  // Budget panel title
+  document.getElementById('budgetPanelTitle').textContent = `Budget vs Actuals — ${activeProj} ${activeYear}`;
+
+  // Note box for future entries
+  const noteBox = document.getElementById('noteBox');
+  if (futureTxns.length) {
+    noteBox.style.display = '';
+    const futureAmt = futureTxns.reduce((s,t) => s + (parseFloat(t.amount)||0), 0);
+    noteBox.textContent = `⚠ ${futureTxns.length} future-dated transaction(s) totalling ${fmtINR(futureAmt)} have been excluded from actuals (payment date is after today).`;
+  } else {
+    noteBox.style.display = 'none';
+  }
+
+  // Budget table
+  const tbody = document.getElementById('budgetBody');
   tbody.innerHTML = '';
-
-  const allHeads = new Set([...Object.keys(cfg.heads), ...Object.keys(spentMap)]);
-  allHeads.forEach(head => {
-    const hCfg    = cfg.heads[head];
-    const budget  = hCfg ? hCfg.budget : 0;
-    const label   = (hCfg && hCfg.label) ? hCfg.label : head;
-    const spent   = spentMap[head] || 0;
-    const bal     = budget - spent;
-    const pct     = budget > 0 ? Math.min(spent / budget * 100, 100) : (spent > 0 ? 100 : 0);
-    const actualPct = budget > 0 ? spent / budget * 100 : 0;
-    const barColor  = actualPct >= 100 ? '#dc2626' : actualPct >= 90 ? '#d97706' : '#10b981';
-
-    let chipClass, chipText;
-    if      (actualPct >= 100) { chipClass = 'chip-red';   chipText = 'Over Budget'; }
-    else if (actualPct >=  90) { chipClass = 'chip-amber'; chipText = 'At 90% Target'; }
-    else if (actualPct >=  50) { chipClass = 'chip-green'; chipText = 'On Track'; }
-    else if (spent > 0)        { chipClass = 'chip-green'; chipText = 'Within Budget'; }
-    else                       { chipClass = 'chip-gray';  chipText = 'No Spend Yet'; }
-
+  for (const h of HEADS) {
+    const bud = budget[h.key] || 0;
+    const spt = actuals[h.key] || 0;
+    const bal = bud - spt;
+    const pct = bud ? Math.min((spt/bud*100), 150) : 0;
+    const barCls = pct >= 100 ? 'bar-red' : pct >= 80 ? 'bar-amber' : 'bar-green';
+    const pctLabel = bud ? (spt/bud*100).toFixed(1)+'%' : (spt > 0 ? '∞' : '—');
+    const balCls   = bal < 0 ? 'color:var(--red)' : '';
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td><strong>${escHtml(label)}</strong></td>
-      <td class="num">${budget > 0 ? '&#8377;' + fmt(budget) : '&mdash;'}</td>
-      <td class="num">&#8377;${fmt(spent)}</td>
-      <td class="num" style="color:${bal < 0 ? 'var(--red)' : 'inherit'}">
-        ${budget > 0 ? (bal < 0 ? '&minus;' : '') + '&#8377;' + fmt(Math.abs(bal)) : '&mdash;'}
-      </td>
-      <td>
-        ${budget > 0 ? `
-          <div class="bar-wrap">
-            <div class="bar-track">
-              <div class="bar-fill" style="width:${pct.toFixed(1)}%; background:${barColor};"></div>
-              <div class="bar-marker"></div>
-            </div>
-            <div class="bar-pct">${actualPct.toFixed(1)}% used</div>
-          </div>` :
-          `<span style="font-size:0.75rem; color:var(--muted);">No budget line</span>`
-        }
-      </td>
-      <td><span class="chip ${chipClass}">${chipText}</span></td>
-    `;
+      <td class="head-name">${h.label}</td>
+      <td>${bud ? fmtINR(bud) : '<span class="zero-budget">Nil</span>'}</td>
+      <td>${spt ? fmtINR(spt) : '<span class="zero-budget">—</span>'}</td>
+      <td style="${balCls}">${bud ? fmtINR(bal) : (spt ? fmtINR(-spt) : '<span class="zero-budget">—</span>')}</td>
+      <td><div class="bar-wrap">
+        <div class="bar-outer"><div class="bar-inner ${barCls}" style="width:${Math.min(pct,100)}%"></div></div>
+        <span class="pct-label" style="${pct>=100?'color:var(--red)':pct>=80?'color:var(--amber)':''}">${pctLabel}</span>
+      </div></td>`;
     tbody.appendChild(tr);
-  });
-
-
-  // Totals row
+  }
+  // Total row
+  const pctTot = totalBudget ? (totalSpent/totalBudget*100).toFixed(1) : '—';
+  const balCls = totalBal < 0 ? 'color:var(--red)' : '';
   const trTot = document.createElement('tr');
   trTot.className = 'total-row';
-  const totPct = totalBudget > 0 ? Math.min(totalSpent / totalBudget * 100, 100) : 0;
-  const totBar = totalSpent / totalBudget * 100;
   trTot.innerHTML = `
     <td>TOTAL</td>
-    <td class="num">&#8377;${fmt(totalBudget)}</td>
-    <td class="num">&#8377;${fmt(totalSpent)}</td>
-    <td class="num" style="color:${balance < 0 ? 'var(--red)' : '#059669'}">
-      ${balance < 0 ? '&minus;' : ''}&#8377;${fmt(Math.abs(balance))}
-    </td>
-    <td>
-      <div class="bar-wrap">
-        <div class="bar-track">
-          <div class="bar-fill" style="width:${totPct.toFixed(1)}%; background:${totBar >= 100 ? '#dc2626' : totBar >= 90 ? '#d97706' : '#10b981'};"></div>
-          <div class="bar-marker"></div>
-        </div>
-        <div class="bar-pct">${pctUsed.toFixed(1)}% used</div>
-      </div>
-    </td>
-    <td></td>
-  `;
+    <td>${fmtINR(totalBudget)}</td>
+    <td>${fmtINR(totalSpent)}</td>
+    <td style="${balCls}">${fmtINR(totalBal)}</td>
+    <td>${pctTot}%</td>`;
   tbody.appendChild(trTot);
 
-  // Program Expense Breakdown
-  renderProgBreakdown(filtered);
+  // Transactions table
+  document.getElementById('txnPanelTitle').textContent = `Transactions — ${activeProj} ${activeYear}`;
+  document.getElementById('txnCount').textContent = `${validTxns.length} entries${futureTxns.length ? ' (+'+futureTxns.length+' excluded)' : ''}`;
 
-  // Transactions
-  const _now = new Date(); _now.setHours(0,0,0,0);
-  const _futureCnt = filtered.filter(e => { var _d = parseDate(e.date); return _d && _d > _now; }).length;
-  const sorted = [...filtered].sort((a, b) => parseDate(b.date) - parseDate(a.date));
-  el('txnCount').textContent = 'Showing ' + Math.min(sorted.length, 25) + ' of ' + sorted.length + ' transactions';
-
-  const txnList = el('txnList');
-  txnList.innerHTML = '';
-  if (_futureCnt > 0) {
-    var _w = document.createElement('div');
-    _w.className = 'future-warn';
-    _w.innerHTML = '<span>&#9888;</span><span><strong>' + _futureCnt + ' entr' + (_futureCnt===1?'y':'ies') + ' in this view have future payment dates</strong> &mdash; recorded ahead of today. Verify these in the source sheet.</span>';
-    txnList.appendChild(_w);
-  }
-  sorted.slice(0, 25).forEach(e => {
-    const div = document.createElement('div');
-    div.className = 'txn-row';
-    if (isFutureDate(e.date)) div.classList.add('txn-future');
-    div.innerHTML = `
-      <div class="txn-date">${fmtDisplayDate(e.date)}${isFutureDate(e.date) ? '<span class="future-tag">&#9888; Future Date</span>' : ''}</div>
-      <div class="txn-body">
-        <div class="txn-name">${escHtml(e.narration)}</div>
-        ${e.remark ? `<div class="txn-meta">${escHtml(e.remark)}</div>` : ''}
-      </div>
-      <span class="txn-badge">${escHtml(e.head)}</span>
-      <div class="txn-amt">&minus;&#8377;${fmt(e.amount)}</div>
-    `;
-    txnList.appendChild(div);
+  const sorted = [...validTxns].sort((a,b) => {
+    const da = parseDate(a.date), db = parseDate(b.date);
+    return (db||0) - (da||0);
   });
-}
 
-
-// Program Expense Breakdown
-function categorizeProg(narration) {
-  const n = (narration || '').toLowerCase();
-  if (/case filing|case filings|case expenditure|court fee/.test(n)) return 'Case Filings';
-  if (/fact finding|fact findings/.test(n)) return 'Fact Findings';
-  if (/legal aid camp|legal aid/.test(n)) return 'Legal Aid Camps';
-  if (/consultation meeting/.test(n)) return 'Consultation Meetings';
-  if (/workshop|training hall|plv training|dlf training|dlf residential|residential training/.test(n)) return 'Workshops & Training';
-  return 'Other Program Expenses';
-}
-
-function renderProgBreakdown(filtered) {
-  const panel = el('progPanel');
-  const tbody = el('progTbody');
-  const hint  = el('progHint');
-  tbody.innerHTML = '';
-  const _pNow = new Date(); _pNow.setHours(0,0,0,0);
-  const progTxns = filtered.filter(e => { const _pd = parseDate(e.date); return (e.head || '').trim() === 'Program Expense' && (!_pd || _pd <= _pNow); });
-  if (!progTxns.length) { panel.style.display = 'none'; return; }
-  const cats = {};
-  progTxns.forEach(e => {
-    const cat = categorizeProg(e.narration);
-    if (!cats[cat]) cats[cat] = { total: 0, txns: [] };
-    cats[cat].total += e.amount;
-    cats[cat].txns.push(e);
-  });
-  const grandTotal = progTxns.reduce((s, e) => s + e.amount, 0);
-  hint.textContent = 'Total ₹' + fmt(grandTotal) + ' · ' + progTxns.length + ' transactions';
-  Object.entries(cats).sort((a, b) => b[1].total - a[1].total).forEach(([cat, data]) => {
-    const pct    = (data.total / grandTotal * 100).toFixed(1);
-    const sample = data.txns.slice(0, 2).map(t => escHtml(t.narration)).join('; ');
-    const more   = data.txns.length > 2 ? ' +' + (data.txns.length - 2) + ' more' : '';
-    const tr = document.createElement('tr');
-    tr.innerHTML =
-      '<td><strong>' + escHtml(cat) + '</strong></td>' +
-      '<td class="num">₹' + fmt(data.total) + '</td>' +
-      '<td class="num">' + pct + '%</td>' +
-      '<td style="font-size:0.75rem;color:var(--muted)">' + sample + more + '</td>';
-    tbody.appendChild(tr);
-  });
-  const trTot = document.createElement('tr');
-  trTot.className = 'total-row';
-  trTot.innerHTML = '<td>TOTAL</td><td class="num">₹' + fmt(grandTotal) + '</td><td class="num">100%</td><td></td>';
-  tbody.appendChild(trTot);
-  panel.style.display = 'block';
-}
-
-// Helpers
-function el(id) { return document.getElementById(id); }
-
-function fmt(n) {
-  if (!n && n !== 0) return '0';
-  return Math.round(n).toLocaleString('en-IN');
-}
-
-function fmtDisplayDate(str) {
-    if (!str) return '—';
-    const d = parseDate(str);
-    if (!d || isNaN(d.getTime())) return (str + '').split('T')[0] || str;
-    const M = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    return d.getDate().toString().padStart(2,'0') + ' ' + M[d.getMonth()] + ' ' + d.getFullYear();
-  }
-  function parseDate(str) {
-  if (!str) return new Date(0);
-  const p = str.split('/');
-  if (p.length === 3) {
-    const y = p[2].length === 2 ? '20' + p[2] : p[2];
-    return new Date(y + '-' + p[1] + '-' + p[0]);
-  }
-  return new Date(str);
-}
-function isFutureDate(str) {
-  var d = parseDate(str); var now = new Date(); now.setHours(0,0,0,0); return d && d > now;
-}
-
-function escHtml(s) {
-  return (s || '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
-
-// Modal
-function openModal() {
-  el('fDate').value    = new Date().toISOString().split('T')[0];
-  el('fProject').value = activeProject;
-  el('submitStatus').textContent = '';
-  el('submitStatus').style.color = '';
-  el('overlay').classList.add('open');
-}
-
-function closeModal() {
-  el('overlay').classList.remove('open');
-}
-
-async function submitExpense() {
-  const date      = el('fDate').value;
-  const amount    = parseFloat(el('fAmount').value);
-  const narration = el('fNarration').value.trim();
-  const project   = el('fProject').value;
-  const head      = el('fHead').value;
-  const remark    = el('fRemark').value.trim();
-
-  if (!date || !amount || !narration || !head) {
-    el('submitStatus').style.color = 'var(--red)';
-    el('submitStatus').textContent = 'Please fill in Date, Amount, Description and Head.';
+  if (!sorted.length) {
+    document.getElementById('txnContent').innerHTML = '<div class="loading" style="padding:32px;color:var(--gray-500)">No transactions found for this period.</div>';
     return;
   }
 
-  const d = new Date(date);
-  const fmtDate = String(d.getDate()).padStart(2,'0') + '/' + String(d.getMonth()+1).padStart(2,'0') + '/' + String(d.getFullYear()).slice(-2);
-
-  if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbySPIe3CHzPg2HVB0yz6VToWfMmo8kPVkvkbIO_s4WF0T-5DXCeJaCFl2zEoN8I0Os/exec') {
-    el('submitStatus').style.color = 'var(--amber)';
-    el('submitStatus').textContent = 'Apps Script not yet configured — opening Google Sheet for manual entryÃÂ¢ÃÂÃÂ¦';
-    setTimeout(() => window.open('https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/edit', '_blank'), 1200);
-    return;
+  let tableHTML = '<table class="txn-table"><thead><tr><th>Date</th><th>Narration</th><th>Head</th><th>Remark</th><th style="text-align:right">Amount (Net)</th><th style="text-align:right">Gross</th></tr></thead><tbody>';
+  for (const t of sorted) {
+    const d   = parseDate(t.date);
+    const key = mapToKey(t.head) || '';
+    const net = parseFloat(t.amount)||0;
+    const isGrossUp = GROSS_UP_HEADS.has(t.head);
+    const gross = isGrossUp ? Math.round(net/0.9) : net;
+    const badge = key ? `<span class="head-badge ${headBadgeClass(key)}">${HEADS.find(h=>h.key===key)?.label||t.head}</span>` : t.head;
+    tableHTML += `<tr>
+      <td class="txn-date">${fmtDate(d)}</td>
+      <td>${t.narration||'—'}</td>
+      <td>${badge}</td>
+      <td style="color:var(--gray-500)">${t.remark||'—'}</td>
+      <td class="txn-amt">${fmtINR(net)}</td>
+      <td class="txn-amt" style="${isGrossUp?'color:var(--blue)':''}">${isGrossUp ? fmtINR(gross) : '—'}</td>
+    </tr>`;
   }
+  tableHTML += '</tbody></table>';
+  document.getElementById('txnContent').innerHTML = tableHTML;
+}
 
-  el('submitStatus').style.color = 'var(--green)';
-  el('submitStatus').textContent = 'SubmittingÃÂ¢ÃÂÃÂ¦';
-
+// ── Fetch data ───────────────────────────────────────────────────────────────
+async function loadData() {
   try {
-    const res  = await fetch(APPS_SCRIPT_URL, {
-      method:  'POST',
-      body:    JSON.stringify({ date: fmtDate, amount, narration, head, remark, project }),
-      headers: { 'Content-Type': 'application/json' }
-    });
-    const json = await res.json();
-    if (json.success) {
-      el('submitStatus').textContent = 'ÃÂ¢ÃÂÃÂ Expense added to the sheet!';
-      setTimeout(() => { closeModal(); loadData(); }, 1600);
-    } else {
-      throw new Error(json.error || 'Unknown error');
-    }
-  } catch (err) {
-    el('submitStatus').style.color = 'var(--red)';
-    el('submitStatus').textContent = 'Error: ' + err.message;
+    const r = await fetch(GAS_URL);
+    const json = await r.json();
+    allTxns = json.transactions || json.data || [];
+    
+    const now = new Date();
+    document.getElementById('lastUpdated').textContent = 
+      'Updated ' + now.toLocaleDateString('en-IN', {day:'numeric',month:'short',year:'numeric'});
+    
+    renderYearButtons();
+    renderDashboard();
+  } catch (e) {
+    document.getElementById('txnContent').innerHTML = 
+      `<div style="padding:20px"><div class="error-box">Failed to load data: ${e.message}</div></div>`;
   }
 }
 
-// Close on backdrop click
-el('overlay').addEventListener('click', e => { if (e.target === el('overlay')) closeModal(); });
-
-// Set defaults
-el('fDate').value = new Date().toISOString().split('T')[0];
-
-// Boot
+// Init
+switchYear('Y1');
 loadData();
 </script>
 </body>
