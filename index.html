@@ -500,17 +500,38 @@ const BUDGETS = {
   },
   'District Legal Fellowship': {
     all: {
-      label: 'District Legal Fellowship', period: 'Mar 2025 – Mar 2026',
+      label: 'District Legal Fellowship — All Years', period: 'Jul 2024 – Dec 2025',
+      total: 4528800,
+      heads: {
+        'Salary/Honrarium':        { budget: 3685800, label: 'Salary & Honorarium' },
+        'Travel/Boarding/Lodging': { budget:  360000, label: 'Travel & Lodging' },
+        'Program Expense':         { budget:  483000, label: 'Program Expense' },
+        'Administration Cost':     { budget:       0, label: 'Administration Cost' },
+        'Cap Ex':                  { budget:       0, label: 'Capital Expenditure' }
+      }
+    },
+    y1: {
+      label: 'District Legal Fellowship — Year 1', period: 'Jul 2024 – Jun 2025',
       total: 2998000,
       heads: {
         'Salary/Honrarium':        { budget: 2436000 },
         'Travel/Boarding/Lodging': { budget:  240000 },
         'Program Expense':         { budget:  322000 },
         'Administration Cost':     { budget:       0 },
-        'Cap Ex':                  { budget:       0 },
+        'Cap Ex':                  { budget:       0 }
       }
     },
-    y1: null, y2: null
+    y2: {
+      label: 'District Legal Fellowship — Year 2', period: 'Jul 2025 – Dec 2025',
+      total: 1530800,
+      heads: {
+        'Salary/Honrarium':        { budget: 1249800 },
+        'Travel/Boarding/Lodging': { budget:  120000 },
+        'Program Expense':         { budget:  161000 },
+        'Administration Cost':     { budget:       0 },
+        'Cap Ex':                  { budget:       0 }
+      }
+    }
   }
 };
 
@@ -525,7 +546,7 @@ function switchTab(tab) {
   document.getElementById('tab-jna').classList.toggle('active', tab === 'jna');
   document.getElementById('tab-dlf').classList.toggle('active', tab === 'dlf');
   document.getElementById('fProject').value = activeProject;
-  document.getElementById('yearFilter').style.display = tab === 'jna' ? 'flex' : 'none';
+  document.getElementById('yearFilter').style.display = (tab === 'jna' || tab === 'dlf') ? 'flex' : 'none';
   if (allExpenses.length) renderDashboard();
 }
 
@@ -624,7 +645,7 @@ function renderDashboard() {
   const cfg = (yBudgets[activeYear] || yBudgets.all);
   let filtered = allExpenses.filter(e => normalizeProject(e.project) === activeProject);
   if (activeYear === 'y1') filtered = filtered.filter(e => { const d = parseDate(e.date); return d && d < new Date('2025-07-01'); });
-  else if (activeYear === 'y2') filtered = filtered.filter(e => { const d = parseDate(e.date); return d && d >= new Date('2025-07-01') && d < new Date('2026-07-01'); });
+  else if (activeYear === 'y2') { const _y2End = activeProject === 'District Legal Fellowship' ? new Date('2026-01-01') : new Date('2026-07-01'); filtered = filtered.filter(e => { const d = parseDate(e.date); return d && d >= new Date('2025-07-01') && d < _y2End; }); }
       else if (activeYear === 'y3') filtered = filtered.filter(e => { const d = parseDate(e.date); return d && d >= new Date('2026-07-01'); });
 
   const _calNow = new Date(); _calNow.setHours(0,0,0,0);
