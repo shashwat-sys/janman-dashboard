@@ -5,41 +5,49 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Janman Finance Dashboard</title>
 <style>
-  :root {
-    --green:#1a5c38;--green-l:#2e7d52;--green-pale:#e8f5ee;
-    --amber:#d97706;--amber-pale:#fffbeb;
-    --red:#dc2626;--red-pale:#fef2f2;
-    --blue:#1e40af;--blue-pale:#eff6ff;
-    --gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;
-    --gray-500:#6b7280;--gray-700:#374151;--gray-900:#111827;
-    --card:#fff;--shadow:0 1px 3px rgba(0,0,0,.08);--radius:10px;
-  }
+  :root{--green:#1a5c38;--green-l:#2e7d52;--green-pale:#e8f5ee;--amber:#d97706;--amber-pale:#fffbeb;--red:#dc2626;--red-pale:#fef2f2;--blue:#1e40af;--blue-pale:#eff6ff;--purple:#7c3aed;--purple-pale:#f5f3ff;--gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;--gray-500:#6b7280;--gray-700:#374151;--gray-900:#111827;--card:#fff;--shadow:0 1px 3px rgba(0,0,0,.08);--radius:10px}
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-900);font-size:14px}
   .hdr{background:var(--green);color:#fff;padding:14px 24px;display:flex;align-items:center;gap:14px;box-shadow:0 2px 6px rgba(0,0,0,.15)}
   .hdr-logo{width:42px;height:42px;background:rgba(255,255,255,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;flex-shrink:0}
   .hdr-title{font-size:18px;font-weight:700}.hdr-sub{font-size:11px;opacity:.8;margin-top:1px}
   .hdr-badge{margin-left:auto;background:rgba(255,255,255,.2);border-radius:20px;padding:4px 12px;font-size:11px;white-space:nowrap}
-  .wrap{max-width:1100px;margin:0 auto;padding:20px 16px}
-  .proj-tabs{display:flex;gap:8px;margin-bottom:18px}
-  .ptab{padding:9px 22px;border-radius:8px;border:2px solid var(--gray-200);background:var(--card);color:var(--gray-700);font-size:14px;font-weight:600;cursor:pointer;transition:all .15s}
-  .ptab.active{background:var(--green);border-color:var(--green);color:#fff}
-  .ptab:hover:not(.active){border-color:var(--green);color:var(--green)}
-  .yr-bar{display:flex;gap:6px;align-items:center;margin-bottom:18px;flex-wrap:wrap}
-  .yr-lbl{font-size:11px;color:var(--gray-500);font-weight:600;margin-right:4px}
-  .yrb{padding:6px 16px;border-radius:20px;border:1.5px solid var(--gray-200);background:var(--card);color:var(--gray-700);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s}
-  .yrb.active{background:var(--green-pale);border-color:var(--green);color:var(--green)}
-  .yrb:hover:not(.active){border-color:var(--green-l);color:var(--green-l)}
+  .wrap{max-width:1120px;margin:0 auto;padding:20px 16px}
   .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
   @media(max-width:680px){.cards{grid-template-columns:repeat(2,1fr)}}
   .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;border-left:4px solid transparent}
-  .card.c1{border-color:var(--blue)}.card.c2{border-color:var(--green)}.card.c3{border-color:var(--amber)}.card.c4{border-color:var(--green-l)}
+  .card.cb{border-color:var(--blue)}.card.cg{border-color:var(--green)}.card.ca{border-color:var(--amber)}.card.cp{border-color:var(--purple)}
   .clbl{font-size:11px;font-weight:600;color:var(--gray-500);text-transform:uppercase;letter-spacing:.5px}
   .cval{font-size:22px;font-weight:700;margin-top:4px}.csub{font-size:11px;color:var(--gray-500);margin-top:2px}
   .panel{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:20px;overflow:hidden}
   .ph{padding:13px 18px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
   .ptitle{font-size:14px;font-weight:700}.pnote{font-size:11px;color:var(--gray-500)}
-  .notebox{background:var(--amber-pale);border:1px solid #fde68a;border-radius:6px;padding:9px 14px;font-size:12px;color:#92400e;margin:12px 18px 0}
+  table.ot{width:100%;border-collapse:collapse}
+  .ot th{padding:9px 14px;text-align:left;font-size:11px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.4px;background:var(--gray-50);border-bottom:1px solid var(--gray-200)}
+  .ot td{padding:10px 14px;border-bottom:1px solid var(--gray-100);vertical-align:middle}
+  .ot td.num{text-align:right;font-family:'Courier New',monospace;font-size:13px}
+  .ot tr:hover td{background:var(--gray-50)}
+  .ot tr.ptotal td{font-weight:700;background:#f0faf4;border-top:1px dashed var(--gray-300)}
+  .ot tr.ptotal.dlf-total td{background:var(--purple-pale)}
+  .ot tr.gtotal td{font-weight:700;background:var(--gray-50);border-top:2px solid var(--gray-300);font-size:13px}
+  .yr-tag{display:inline-block;border-radius:12px;padding:2px 9px;font-size:11px;font-weight:700;margin-right:6px;background:var(--green-pale);color:var(--green)}
+  .yr-tag.d{background:var(--purple-pale);color:var(--purple)}
+  .period{font-size:11px;color:var(--gray-500)}
+  .bw{display:flex;align-items:center;gap:8px;justify-content:flex-end}
+  .bo{width:70px;height:6px;background:var(--gray-200);border-radius:3px;flex-shrink:0}
+  .bi{height:6px;border-radius:3px}.bg{background:var(--green-l)}.ba{background:var(--amber)}.br{background:var(--red)}
+  .pl{font-size:11px;font-weight:600;min-width:44px;text-align:right}
+  .nil{color:var(--gray-500)}
+  .sec-hdr{font-size:13px;font-weight:700;color:var(--gray-700);margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid var(--gray-200)}
+  .proj-tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+  .ptab{padding:8px 20px;border-radius:8px;border:2px solid var(--gray-200);background:var(--card);color:var(--gray-700);font-size:13px;font-weight:600;cursor:pointer;transition:all .15s}
+  .ptab.active{background:var(--green);border-color:var(--green);color:#fff}
+  .ptab.dtab.active{background:var(--purple);border-color:var(--purple)}
+  .ptab:hover:not(.active){border-color:var(--green);color:var(--green)}
+  .ptab.dtab:hover:not(.active){border-color:var(--purple);color:var(--purple)}
+  .yr-bar{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+  .yrb{padding:6px 15px;border-radius:20px;border:1.5px solid var(--gray-200);background:var(--card);color:var(--gray-700);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s}
+  .yrb.active{background:var(--green-pale);border-color:var(--green);color:var(--green)}
   table.bt{width:100%;border-collapse:collapse}
   .bt th{padding:9px 14px;text-align:left;font-size:11px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.4px;background:var(--gray-50);border-bottom:1px solid var(--gray-200)}
   .bt th:not(:first-child){text-align:right}
@@ -47,318 +55,164 @@
   .bt td:not(:first-child){text-align:right;font-family:'Courier New',monospace;font-size:13px}
   .bt tr:hover td{background:var(--gray-50)}
   .bt tr.tot td{font-weight:700;background:var(--gray-50);border-top:2px solid var(--gray-200);border-bottom:none}
-  .hname{font-weight:600}.nil{color:var(--gray-500)}
-  .bw{display:flex;align-items:center;gap:8px}
-  .bo{flex:1;height:6px;background:var(--gray-200);border-radius:3px;min-width:60px}
-  .bi{height:6px;border-radius:3px}.bg{background:var(--green-l)}.ba{background:var(--amber)}.br{background:var(--red)}
-  .pl{font-size:11px;font-weight:600;min-width:40px;text-align:right}
+  .hname{font-weight:600}
+  .notebox{background:var(--amber-pale);border:1px solid #fde68a;border-radius:6px;padding:9px 14px;font-size:12px;color:#92400e;margin:10px 18px}
+  .infobox{background:var(--blue-pale);border:1px solid #bfdbfe;border-radius:6px;padding:9px 14px;font-size:12px;color:var(--blue);margin:10px 18px}
   table.tt{width:100%;border-collapse:collapse}
   .tt th{padding:8px 14px;text-align:left;font-size:11px;font-weight:700;color:var(--gray-500);text-transform:uppercase;background:var(--gray-50);border-bottom:1px solid var(--gray-200)}
   .tt td{padding:8px 14px;border-bottom:1px solid var(--gray-100);font-size:13px}
   .tt tr:hover td{background:var(--gray-50)}
-  .tamount{text-align:right;font-family:'Courier New',monospace;font-weight:600}
-  .tdate{color:var(--gray-500);font-size:12px;white-space:nowrap}
-  .svcbadge{font-size:10px;background:var(--blue-pale);color:var(--blue);border-radius:3px;padding:1px 5px;margin-left:4px}
-  .hb{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600}
-  .hs{background:var(--blue-pale);color:var(--blue)}.ht{background:#f0fdf4;color:#166534}
-  .hp{background:#fef9c3;color:#854d0e}.ha{background:var(--gray-100);color:var(--gray-700)}.hc{background:#fdf4ff;color:#86198f}
-  .loading{text-align:center;padding:40px;color:var(--gray-500)}
-  .spin{width:32px;height:32px;border:3px solid var(--gray-200);border-top-color:var(--green);border-radius:50%;animation:sp .8s linear infinite;margin:0 auto 10px}
-  @keyframes sp{to{transform:rotate(360deg)}}
-  .errbox{background:var(--red-pale);border:1px solid #fecaca;border-radius:var(--radius);padding:14px;color:var(--red);margin:16px}
+  .tamt{text-align:right;font-family:'Courier New',monospace;font-weight:600}
+  .tdate{color:var(--gray-700);white-space:nowrap}
+  .hb{display:inline-block;border-radius:12px;padding:2px 8px;font-size:11px;font-weight:600;white-space:nowrap}
+  .hs{background:#dbeafe;color:#1e40af}.hc{background:#f3e8ff;color:#7c3aed}.ht{background:#d1fae5;color:#065f46}.hp{background:#fef3c7;color:#92400e}.ha{background:#f3f4f6;color:#374151}
+  .svcb{display:inline-block;background:#eff6ff;color:#1e40af;border-radius:10px;padding:1px 6px;font-size:10px;font-weight:700;margin-left:5px;border:1px solid #bfdbfe}
+  .loading{padding:40px;text-align:center;color:var(--gray-500)}
+  .errbox{background:var(--red-pale);border:1px solid #fecaca;border-radius:6px;padding:12px;color:var(--red);margin:16px}
 </style>
 </head>
 <body>
 <div class="hdr">
   <div class="hdr-logo">J</div>
-  <div><div class="hdr-title">Janman People's Foundation</div>
-  <div class="hdr-sub">Finance Dashboard &mdash; Budget vs Actuals</div></div>
+  <div><div class="hdr-title">Janman People's Foundation &mdash; Finance Dashboard</div>
+  <div class="hdr-sub">Jan Nyay Abhiyan &amp; District Legal Fellowship &middot; Budget vs Actuals</div></div>
   <div class="hdr-badge" id="upd">Loading&hellip;</div>
 </div>
 <div class="wrap">
+  <div class="cards">
+    <div class="card cb"><div class="clbl">Total Budget</div><div class="cval" id="oB">—</div><div class="csub">Both projects, all years</div></div>
+    <div class="card cg"><div class="clbl">Total Spent (Gross)</div><div class="cval" id="oS">—</div><div class="csub" id="oSS">— transactions</div></div>
+    <div class="card ca"><div class="clbl">Balance</div><div class="cval" id="oBal">—</div><div class="csub" id="oBalS">Remaining</div></div>
+    <div class="card cp"><div class="clbl">% Utilised</div><div class="cval" id="oPct">—</div><div class="csub" id="oPctS">overall</div></div>
+  </div>
+  <div class="panel">
+    <div class="ph"><span class="ptitle">All Projects — Year-wise Overview</span><span class="pnote">Click any row to drill down &middot; Gross figures (TDS grossed up) &middot; Future entries excluded</span></div>
+    <table class="ot"><thead><tr><th>Project / Year</th><th>Period</th><th style="text-align:right">Budget</th><th style="text-align:right">Spent (Gross)</th><th style="text-align:right">Balance</th><th style="text-align:right">Utilisation</th></tr></thead>
+    <tbody id="ovBody"><tr><td colspan="6" class="loading">Loading&hellip;</td></tr></tbody></table>
+  </div>
+  <div class="sec-hdr">Detailed Breakdown — select project &amp; year</div>
   <div class="proj-tabs">
     <button class="ptab active" onclick="switchProj('Jan Nyay Abhiyan')">Jan Nyay Abhiyan</button>
-    <button class="ptab" onclick="switchProj('District Legal Fellowship')">District Legal Fellowship</button>
+    <button class="ptab dtab" onclick="switchProj('District Legal Fellowship')">District Legal Fellowship</button>
   </div>
-  <div class="yr-bar"><span class="yr-lbl">YEAR</span><span id="yrBtns"></span></div>
-  <div class="cards">
-    <div class="card c1"><div class="clbl">Annual Budget</div><div class="cval" id="cBud">—</div><div class="csub" id="cBudS"></div></div>
-    <div class="card c2"><div class="clbl">Spent (Gross)</div><div class="cval" id="cSpt">—</div><div class="csub" id="cSptS"></div></div>
-    <div class="card c3"><div class="clbl">Balance</div><div class="cval" id="cBal">—</div><div class="csub" id="cBalS"></div></div>
-    <div class="card c4"><div class="clbl">% Utilised</div><div class="cval" id="cPct">—</div><div class="csub" id="cPctS"></div></div>
-  </div>
+  <div class="yr-bar" id="yrBtns"></div>
   <div class="panel">
-    <div class="ph"><span class="ptitle" id="bTitle">Budget vs Actuals</span>
-    <span class="pnote">Salary/consultation shown at gross (net &divide; 0.9) — 10% TDS deducted at source</span></div>
+    <div class="ph"><span class="ptitle" id="bTitle">Budget vs Actuals</span><span class="pnote">Salary/consultation at gross (net &divide; 0.9)</span></div>
     <div id="noteBox"></div>
-    <table class="bt"><thead><tr><th>Budget Head</th><th>Annual Budget</th><th>Spent (Gross)</th><th>Balance</th><th style="min-width:140px">Utilisation</th></tr></thead>
-    <tbody id="btBody"></tbody></table>
+    <table class="bt"><thead><tr><th>Budget Head</th><th>Annual Budget</th><th>Spent (Gross)</th><th>Balance</th><th>Utilisation</th></tr></thead><tbody id="btBody"></tbody></table>
   </div>
   <div class="panel">
-    <div class="ph"><span class="ptitle" id="tTitle">Transactions</span><span class="pnote" id="tCount"></span></div>
-    <div id="tContent"><div class="loading"><div class="spin"></div>Loading transactions&hellip;</div></div>
+    <div class="ph"><span class="ptitle" id="tTitle">Transactions</span><span class="pnote" id="tCnt"></span></div>
+    <div id="tContent"><div class="loading">Loading&hellip;</div></div>
   </div>
 </div>
 <script>
 const GAS='https://script.google.com/macros/s/AKfycbylXVOOYVNKmLD6UfQiDLHCtB1NZgqJkLwOn3WIlTsXXmJcMgWxdDjgHGrWD0Yycafq/exec';
-
-// ── Budget (from actual Excel files, verified May 2026) ──────────────────────
 const PROJECTS={
   'Jan Nyay Abhiyan':{
-    years:[
-      {label:'Y1',name:'Year I (Jul 2024 – Jun 2025)',start:[2024,6],end:[2025,5]},
-      {label:'Y2',name:'Year II (Jul 2025 – Jun 2026)',start:[2025,6],end:[2026,5]},
-      {label:'Y3',name:'Year III (Jul 2026 – Jun 2027)',start:[2026,6],end:[2027,5]}
-    ],
-    budget:{
-      Y1:{salary:1374000,capex:63000,travel:105000,program:262000,admin:198750},
-      Y2:{salary:1115400,capex:0,travel:144900,program:572725,admin:213077},
-      Y3:{salary:1089000,capex:0,travel:152145,program:570099,admin:139905}
-    }
+    years:[{label:'Y1',name:'Year I (Jul 2024 – Jun 2025)',start:[2024,6],end:[2025,5]},{label:'Y2',name:'Year II (Jul 2025 – Jun 2026)',start:[2025,6],end:[2026,5]},{label:'Y3',name:'Year III (Jul 2026 – Jun 2027)',start:[2026,6],end:[2027,5]}],
+    budget:{Y1:{salary:1374000,capex:63000,travel:105000,program:262000,admin:198750},Y2:{salary:1115400,capex:0,travel:144900,program:572725,admin:213077},Y3:{salary:1089000,capex:0,travel:152145,program:570099,admin:139905}}
   },
   'District Legal Fellowship':{
-    years:[
-      {label:'Y1',name:'Year I (Jul 2024 – Jun 2025)',start:[2024,6],end:[2025,5]},
-      {label:'Y2',name:'Year II (Jul 2025 – Dec 2025)',start:[2025,6],end:[2025,11]}
-    ],
-    budget:{
-      Y1:{salary:2436000,capex:0,travel:240000,program:322000,admin:0},
-      Y2:{salary:1249800,capex:0,travel:120000,program:161000,admin:0}
-    }
+    years:[{label:'Y1',name:'Year I (Jul 2024 – Jun 2025)',start:[2024,6],end:[2025,5]},{label:'Y2',name:'Year II (Jul 2025 – Dec 2025)',start:[2025,6],end:[2025,11]}],
+    budget:{Y1:{salary:2436000,capex:0,travel:240000,program:322000,admin:0},Y2:{salary:1249800,capex:0,travel:120000,program:161000,admin:0}}
   }
 };
-
-const HEADS=[
-  {key:'salary',label:'Salary, Honorarium & Staff Benefits'},
-  {key:'capex', label:'Fixed Assets / CAPEX'},
-  {key:'travel',label:'Travel, Boarding & Lodging'},
-  {key:'program',label:'Program Expenses'},
-  {key:'admin', label:'Administration Cost'}
-];
-
-// GAS head → budget key
-function mapKey(h){
-  if(h==='Salary/Honrarium'||h==='Admin Staff')return'salary';
-  if(h==='Cap Ex')return'capex';
-  if(h==='Travel/Boarding/Lodging')return'travel';
-  if(h==='Program Expense')return'program';
-  if(h==='Administration Cost')return'admin';
-  return null;
-}
-
-// Salary heads — need gross-up (10% TDS deducted at source, net recorded)
+const HEADS=[{key:'salary',label:'Salary, Honorarium & Staff Benefits'},{key:'capex',label:'Fixed Assets / CAPEX'},{key:'travel',label:'Travel, Boarding & Lodging'},{key:'program',label:'Program Expenses'},{key:'admin',label:'Administration Cost'}];
 const SAL_HEADS=new Set(['Salary/Honrarium','Admin Staff']);
-
-// ── Date helpers ─────────────────────────────────────────────────────────────
-function parseDate(s){
-  if(!s)return null;
-  const p=String(s).match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{2,4})/);
-  if(p){let y=parseInt(p[3]);if(y<100)y+=2000;return new Date(y,parseInt(p[2])-1,parseInt(p[1]));}
-  const d=new Date(s);return isNaN(d.getTime())?null:d;
-}
-
-// Extract service month from narration (for salary allocation by service month, not payment date)
-// Rule per Janman finance policy: salary allocated to the month of SERVICE, not payment date
 const MNAMES=['january','february','march','april','may','june','july','august','september','october','november','december'];
-function extractSvcDate(narr,payD){
-  const lo=String(narr).toLowerCase();
-  for(let i=0;i<MNAMES.length;i++){
-    if(new RegExp('\\b'+MNAMES[i]+'\\b').test(lo)){
-      // Try same calendar year first; if that month is >60 days in the future from payment, use previous year
-      const sameYr=new Date(payD.getFullYear(),i,1);
-      const maxFut=new Date(payD.getTime()+60*24*60*60*1000);
-      return sameYr<=maxFut?sameYr:new Date(payD.getFullYear()-1,i,1);
-    }
-  }
-  return null;
-}
-
-function yrLabel(d,proj){
-  if(!d)return null;
-  const m=d.getFullYear()*12+d.getMonth();
-  for(const yr of PROJECTS[proj].years){
-    const s=yr.start[0]*12+yr.start[1],e=yr.end[0]*12+yr.end[1];
-    if(m>=s&&m<=e)return yr.label;
-  }
-  return null;
-}
-
-// Get effective year bucket for a transaction:
-// Salary → use service month from narration if available, else payment date
-// Other → use payment date always
-function txnYrLabel(t,proj){
-  const payD=parseDate(t.date);
-  if(!payD)return null;
-  if(SAL_HEADS.has(t.head)){
-    const sd=extractSvcDate(t.narration,payD);
-    if(sd)return yrLabel(sd,proj);
-  }
-  return yrLabel(payD,proj);
-}
-
-function isFuture(d){return d&&d>new Date();}
-
-function fmtINR(n){
-  if(!n&&n!==0)return'—';
-  const abs=Math.abs(Math.round(n));
-  const s=abs.toString();
-  let r=s.length>3?s.slice(-3):s,rem=s.slice(0,s.length>3?s.length-3:0);
-  while(rem.length>2){r=rem.slice(-2)+','+r;rem=rem.slice(0,-2);}
-  if(rem)r=rem+','+r;
-  return(n<0?'−':'')+'₹'+r;
-}
+function parseDate(s){if(!s)return null;const p=String(s).match(/^(d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})/);if(p){let y=parseInt(p[3]);if(y<100)y+=2000;return new Date(y,parseInt(p[2])-1,parseInt(p[1]));}const d=new Date(s);return isNaN(d.getTime())?null:d;}
+function extractSvc(narr,payD){const lo=String(narr).toLowerCase();for(let i=0;i<MNAMES.length;i++){if(new RegExp('\\b'+MNAMES[i]+'\\b').test(lo)){const sy=new Date(payD.getFullYear(),i,1),mf=new Date(payD.getTime()+60*864e5);return sy<=mf?sy:new Date(payD.getFullYear()-1,i,1);}}return null;}
+function yrLbl(d,proj){if(!d)return null;const m=d.getFullYear()*12+d.getMonth();for(const yr of PROJECTS[proj].years){const s=yr.start[0]*12+yr.start[1],e=yr.end[0]*12+yr.end[1];if(m>=s&&m<=e)return yr.label;}return null;}
+function txnYr(t,proj){const pd=parseDate(t.date);if(!pd)return null;if(SAL_HEADS.has(t.head)){const sd=extractSvc(t.narration,pd);if(sd)return yrLbl(sd,proj);}return yrLbl(pd,proj);}
+function isFut(d){return d&&d>new Date();}
+function fmtINR(n){if(!n&&n!==0)return'—';const abs=Math.abs(Math.round(n));const s=abs.toString();let r=s.length>3?s.slice(-3):s,rem=s.slice(0,s.length>3?s.length-3:0);while(rem.length>2){r=rem.slice(-2)+','+r;rem=rem.slice(0,-2);}if(rem)r=rem+','+r;return(n<0?'−':'')+'₹'+r;}
 function fmtD(d){if(!d)return'—';return d.getDate().toString().padStart(2,'0')+'/'+(d.getMonth()+1).toString().padStart(2,'0')+'/'+d.getFullYear();}
-function hbClass(k){return{salary:'hs',capex:'hc',travel:'ht',program:'hp',admin:'ha'}[k]||'ha';}
-
-// ── State ────────────────────────────────────────────────────────────────────
+function mapKey(h){if(h==='Salary/Honrarium'||h==='Admin Staff')return'salary';if(h==='Cap Ex')return'capex';if(h==='Travel/Boarding/Lodging')return'travel';if(h==='Program Expense')return'program';if(h==='Administration Cost')return'admin';return null;}
+function hbCls(k){return{salary:'hs',capex:'hc',travel:'ht',program:'hp',admin:'ha'}[k]||'ha';}
+function calcYr(proj,yl){
+  const bud=PROJECTS[proj].budget[yl]||{};
+  const tb=HEADS.reduce((s,h)=>s+(bud[h.key]||0),0);
+  const valid=allTxns.filter(t=>t.project===proj&&!isFut(parseDate(t.date))&&txnYr(t,proj)===yl);
+  let sp=0;for(const t of valid){let a=parseFloat(t.amount)||0;if(SAL_HEADS.has(t.head))a=a/0.9;sp+=a;}
+  return{tb,sp:Math.round(sp),cnt:valid.length};
+}
 let allTxns=[],activeProj='Jan Nyay Abhiyan',activeYear='Y1';
-
-function switchProj(p){
-  activeProj=p;
-  document.querySelectorAll('.ptab').forEach(el=>el.classList.toggle('active',el.textContent===p));
-  activeYear=PROJECTS[p].years[0].label;
-  renderYrBtns();renderDash();
+function renderOverview(){
+  const tb=document.getElementById('ovBody');tb.innerHTML='';
+  let gB=0,gS=0,gC=0;
+  for(const [proj,cfg] of Object.entries(PROJECTS)){
+    const isDLF=proj.includes('District');
+    let pB=0,pS=0,pC=0;
+    for(const yr of cfg.years){
+      const {tb:b,sp:s,cnt:c}=calcYr(proj,yr.label);
+      const bal=b-s,pct=b?(s/b*100):0,bl=pct>=100?'br':pct>=80?'ba':'bg';
+      const period=yr.name.match(/\((.+)\)/)?.[1]||yr.name;
+      tb.insertAdjacentHTML('beforeend',`<tr style="cursor:pointer" onclick="switchProjYr('${proj}','${yr.label}')">
+        <td><span class="yr-tag${isDLF?' d':''}">${yr.label}</span><span style="font-weight:600">${proj}</span></td>
+        <td class="period">${period}</td>
+        <td class="num">${b?fmtINR(b):'<span class=nil>—</span>'}</td>
+        <td class="num">${s?fmtINR(s):'<span class=nil>—</span>'}</td>
+        <td class="num" style="${bal<0?'color:var(--red)':''}">${b?fmtINR(bal):'—'}</td>
+        <td class="num"><div class="bw"><div class="bo"><div class="bi ${bl}" style="width:${Math.min(pct,100)}%"></div></div><span class="pl" style="${pct>=100?'color:var(--red)':pct>=80?'color:var(--amber)':''}">${b?(pct.toFixed(1)+'%'):'—'}</span></div></td>
+      </tr>`);
+      pB+=b;pS+=s;pC+=c;
+    }
+    const pBal=pB-pS,pPct=pB?(pS/pB*100):0;
+    tb.insertAdjacentHTML('beforeend',`<tr class="ptotal${isDLF?' dlf-total':''}">
+      <td colspan="2" style="color:${isDLF?'var(--purple)':'var(--green)'};${''}">${proj} — Total (${pC} transactions)</td>
+      <td class="num">${fmtINR(pB)}</td><td class="num">${fmtINR(pS)}</td>
+      <td class="num" style="${pBal<0?'color:var(--red)':''}">${fmtINR(pBal)}</td>
+      <td class="num"><div class="bw"><div class="bo"><div class="bi ${pPct>=100?'br':pPct>=80?'ba':'bg'}" style="width:${Math.min(pPct,100)}%"></div></div><span class="pl">${pPct.toFixed(1)}%</span></div></td>
+    </tr>`);
+    gB+=pB;gS+=pS;gC+=pC;
+  }
+  const gBal=gB-gS,gPct=gB?(gS/gB*100):0;
+  tb.insertAdjacentHTML('beforeend',`<tr class="gtotal">
+    <td colspan="2">GRAND TOTAL — All Projects (${gC} transactions)</td>
+    <td class="num">${fmtINR(gB)}</td><td class="num">${fmtINR(gS)}</td>
+    <td class="num" style="${gBal<0?'color:var(--red)':''}">${fmtINR(gBal)}</td>
+    <td class="num"><div class="bw"><div class="bo"><div class="bi ${gPct>=100?'br':gPct>=80?'ba':'bg'}" style="width:${Math.min(gPct,100)}%"></div></div><span class="pl">${gPct.toFixed(1)}%</span></div></td>
+  </tr>`);
+  document.getElementById('oB').textContent=fmtINR(gB);
+  document.getElementById('oS').textContent=fmtINR(gS);
+  document.getElementById('oSS').textContent=gC+' transactions';
+  document.getElementById('oBal').textContent=fmtINR(gBal);
+  document.getElementById('oBalS').textContent=gBal<0?'Over budget!':'Remaining';
+  document.getElementById('oPct').textContent=gPct.toFixed(1)+'%';
+  document.getElementById('oPctS').textContent='of '+fmtINR(gB)+' total';
 }
-function switchYr(y){
-  activeYear=y;
-  document.querySelectorAll('.yrb').forEach(el=>el.classList.toggle('active',el.dataset.y===y));
-  renderDash();
-}
-function renderYrBtns(){
-  document.getElementById('yrBtns').innerHTML=PROJECTS[activeProj].years.map(y=>
-    `<button class="yrb${y.label===activeYear?' active':''}" data-y="${y.label}" onclick="switchYr('${y.label}')">${y.label} – ${y.name.replace(/^Year [IVX]+ \(/,'').replace(')','')} </button>`
-  ).join('');
-}
-
+function switchProjYr(proj,yr){switchProj(proj);switchYr(yr);document.querySelector('.sec-hdr')?.scrollIntoView({behavior:'smooth',block:'start'});}
+function switchProj(p){activeProj=p;document.querySelectorAll('.ptab').forEach(el=>el.classList.toggle('active',el.textContent.trim().startsWith(p.split(' ')[0])));activeYear=PROJECTS[p].years[0].label;renderYrBtns();renderDash();}
+function switchYr(y){activeYear=y;document.querySelectorAll('.yrb').forEach(el=>el.classList.toggle('active',el.dataset.y===y));renderDash();}
+function renderYrBtns(){document.getElementById('yrBtns').innerHTML=PROJECTS[activeProj].years.map(y=>`<button class="yrb${y.label===activeYear?' active':''}" data-y="${y.label}" onclick="switchYr('${y.label}')">${y.label} – ${y.name.replace(/^Year [IVX]+ \(/,'').replace(')','')}</button>`).join('');}
 function renderDash(){
   if(!allTxns.length)return;
-  const proj=PROJECTS[activeProj];
-  const yrCfg=proj.years.find(y=>y.label===activeYear);
-  const bud=proj.budget[activeYear]||{};
-  const today=new Date();
-
-  // Filter transactions for this project + year using service-month-aware bucketing
-  const all=allTxns.filter(t=>t.project===activeProj&&txnYrLabel(t,activeProj)===activeYear);
-  const valid=all.filter(t=>!isFuture(parseDate(t.date)));
-  const future=all.filter(t=>isFuture(parseDate(t.date)));
-
-  // Compute actuals (gross up salary)
+  const cfg=PROJECTS[activeProj],yrCfg=cfg.years.find(y=>y.label===activeYear),bud=cfg.budget[activeYear]||{};
+  const all=allTxns.filter(t=>t.project===activeProj&&txnYr(t,activeProj)===activeYear);
+  const valid=all.filter(t=>!isFut(parseDate(t.date))),future=all.filter(t=>isFut(parseDate(t.date)));
   const act={salary:0,capex:0,travel:0,program:0,admin:0};
-  for(const t of valid){
-    const k=mapKey(t.head);if(!k)continue;
-    let a=parseFloat(t.amount)||0;
-    if(SAL_HEADS.has(t.head))a=a/0.9;
-    act[k]=(act[k]||0)+a;
-  }
+  for(const t of valid){const k=mapKey(t.head);if(!k)continue;let a=parseFloat(t.amount)||0;if(SAL_HEADS.has(t.head))a=a/0.9;act[k]=(act[k]||0)+a;}
   HEADS.forEach(h=>act[h.key]=Math.round(act[h.key]||0));
-
-  const totBud=HEADS.reduce((s,h)=>s+(bud[h.key]||0),0);
-  const totSpt=HEADS.reduce((s,h)=>s+(act[h.key]||0),0);
-  const totBal=totBud-totSpt;
-  const totPct=totBud?(totSpt/totBud*100):0;
-
-  document.getElementById('cBud').textContent=fmtINR(totBud);
-  document.getElementById('cBudS').textContent=yrCfg.name;
-  document.getElementById('cSpt').textContent=fmtINR(totSpt);
-  document.getElementById('cSptS').textContent=valid.length+' transactions';
-  document.getElementById('cBal').textContent=fmtINR(totBal);
-  document.getElementById('cBalS').textContent=totBal<0?'Over budget!':'Remaining';
-  document.getElementById('cBal').style.color=totBal<0?'var(--red)':'';
-  document.getElementById('cPct').textContent=totPct.toFixed(1)+'%';
-  document.getElementById('cPctS').textContent='of '+fmtINR(totBud);
+  const tB=HEADS.reduce((s,h)=>s+(bud[h.key]||0),0),tS=HEADS.reduce((s,h)=>s+(act[h.key]||0),0),tBal=tB-tS,tPct=tB?(tS/tB*100):0;
   document.getElementById('bTitle').textContent=`Budget vs Actuals — ${activeProj} ${activeYear}`;
-
-  // Future entries note
-  const nb=document.getElementById('noteBox');
-  const notes=[];
-  if(future.length){
-    const fa=future.reduce((s,t)=>s+(parseFloat(t.amount)||0),0);
-    notes.push(`⚠ ${future.length} future-dated transaction(s) worth ${fmtINR(fa)} excluded (payment date after today).`);
-  }
-  // Salary service-month note
-  const svcAdjusted=valid.filter(t=>{
-    if(!SAL_HEADS.has(t.head))return false;
-    const pd=parseDate(t.date);if(!pd)return false;
-    const sd=extractSvcDate(t.narration,pd);
-    return sd&&(sd.getFullYear()!==pd.getFullYear()||sd.getMonth()!==pd.getMonth());
-  });
-  if(svcAdjusted.length){
-    notes.push(`ℹ ${svcAdjusted.length} salary transaction(s) allocated by service month (narration), not payment date, per Janman finance policy.`);
-  }
-  nb.innerHTML=notes.map(n=>`<div class="notebox">${n}</div>`).join('');
-
-  // Budget table
-  const tb=document.getElementById('btBody');tb.innerHTML='';
-  for(const h of HEADS){
-    const b=bud[h.key]||0,sp=act[h.key]||0,bl=b-sp;
-    const pct=b?(Math.min(sp/b*100,150)):0;
-    const pctLbl=b?(sp/b*100).toFixed(1)+'%':(sp>0?'∞':'—');
-    const barcls=pct>=100?'br':pct>=80?'ba':'bg';
-    const blStyle=bl<0?'color:var(--red)':'';
-    const pctStyle=pct>=100?'color:var(--red)':pct>=80?'color:var(--amber)':'';
-    tb.insertAdjacentHTML('beforeend',`<tr>
-      <td class="hname">${h.label}</td>
-      <td>${b?fmtINR(b):'<span class="nil">Nil</span>'}</td>
-      <td>${sp?fmtINR(sp):'<span class="nil">—</span>'}</td>
-      <td style="${blStyle}">${b?fmtINR(bl):(sp?fmtINR(-sp):'<span class="nil">—</span>')}</td>
-      <td><div class="bw"><div class="bo"><div class="bi ${barcls}" style="width:${Math.min(pct,100)}%"></div></div>
-      <span class="pl" style="${pctStyle}">${pctLbl}</span></div></td></tr>`);
-  }
-  const totBlStyle=totBal<0?'color:var(--red)':'';
-  tb.insertAdjacentHTML('beforeend',`<tr class="tot">
-    <td>TOTAL</td><td>${fmtINR(totBud)}</td><td>${fmtINR(totSpt)}</td>
-    <td style="${totBlStyle}">${fmtINR(totBal)}</td>
-    <td><span class="pl" style="${totPct>=100?'color:var(--red)':''}">${totPct.toFixed(1)}%</span></td></tr>`);
-
-  // Transaction list
+  const nb=document.getElementById('noteBox');nb.innerHTML='';
+  if(future.length)nb.insertAdjacentHTML('beforeend',`<div class="notebox">⚠ ${future.length} future-dated transaction(s) worth ${fmtINR(future.reduce((s,t)=>s+(parseFloat(t.amount)||0),0))} excluded.</div>`);
+  const svcAdj=valid.filter(t=>{if(!SAL_HEADS.has(t.head))return false;const pd=parseDate(t.date);if(!pd)return false;const sd=extractSvc(t.narration,pd);return sd&&(sd.getFullYear()!==pd.getFullYear()||sd.getMonth()!==pd.getMonth());});
+  if(svcAdj.length)nb.insertAdjacentHTML('beforeend',`<div class="infobox">ℹ ${svcAdj.length} salary transaction(s) allocated by service month (narration), not payment date, per Janman finance policy.</div>`);
+  const tbody=document.getElementById('btBody');tbody.innerHTML='';
+  for(const h of HEADS){const b=bud[h.key]||0,sp=act[h.key]||0,bl=b-sp,pct=b?(Math.min(sp/b*100,150)):0,pL=b?(sp/b*100).toFixed(1)+'%':(sp>0?'∞':'—'),bc=pct>=100?'br':pct>=80?'ba':'bg';
+    tbody.insertAdjacentHTML('beforeend',`<tr><td class="hname">${h.label}</td><td>${b?fmtINR(b):'<span class=nil>Nil</span>'}</td><td>${sp?fmtINR(sp):'<span class=nil>—</span>'}</td><td style="${bl<0?'color:var(--red)':''}">${b?fmtINR(bl):(sp?fmtINR(-sp):'<span class=nil>—</span>')}</td><td><div class="bw"><div class="bo"><div class="bi ${bc}" style="width:${Math.min(pct,100)}%"></div></div><span class="pl" style="${pct>=100?'color:var(--red)':pct>=80?'color:var(--amber)':''}">${pL}</span></div></td></tr>`);}
+  tbody.insertAdjacentHTML('beforeend',`<tr class="tot"><td>TOTAL</td><td>${fmtINR(tB)}</td><td>${fmtINR(tS)}</td><td style="${tBal<0?'color:var(--red)':''}">${fmtINR(tBal)}</td><td><span class="pl" style="${tPct>=100?'color:var(--red)':''}">${tPct.toFixed(1)}%</span></td></tr>`);
   document.getElementById('tTitle').textContent=`Transactions — ${activeProj} ${activeYear}`;
-  document.getElementById('tCount').textContent=valid.length+' entries'+(future.length?' (+'+future.length+' future excluded)':'');
+  document.getElementById('tCnt').textContent=valid.length+' entries'+(future.length?' (+'+future.length+' future excluded)':'');
   const sorted=[...valid].sort((a,b)=>(parseDate(b.date)||0)-(parseDate(a.date)||0));
-  if(!sorted.length){
-    document.getElementById('tContent').innerHTML='<div class="loading" style="padding:28px">No transactions for this period.</div>';return;
-  }
+  if(!sorted.length){document.getElementById('tContent').innerHTML='<div class="loading">No transactions for this period.</div>';return;}
   let html='<table class="tt"><thead><tr><th>Pay Date</th><th>Narration</th><th>Head</th><th>Remark / Service</th><th style="text-align:right">Net Paid</th><th style="text-align:right">Gross (Tracker)</th></tr></thead><tbody>';
-  for(const t of sorted){
-    const pd2=parseDate(t.date);
-    const k=mapKey(t.head)||'';
-    const net=parseFloat(t.amount)||0;
-    const isS=SAL_HEADS.has(t.head);
-    const gross=isS?Math.round(net/0.9):net;
-    const hdLabel=k?(HEADS.find(h=>h.key===k)?.label||t.head):t.head;
-    const badge=`<span class="hb ${k?hbClass(k):''}">${hdLabel}</span>`;
-    // Check if service month differs from payment month
-    let svcNote='';
-    if(isS&&pd2){
-      const sd=extractSvcDate(t.narration,pd2);
-      if(sd&&(sd.getFullYear()!==pd2.getFullYear()||sd.getMonth()!==pd2.getMonth())){
-        svcNote=`<span class="svcbadge">svc: ${MNAMES[sd.getMonth()].slice(0,3).toUpperCase()} ${sd.getFullYear()}</span>`;
-      }
-    }
-    const rmk=t.remark?t.remark:'—';
-    html+=`<tr>
-      <td class="tdate">${fmtD(pd2)}</td>
-      <td>${t.narration||'—'}</td>
-      <td>${badge}</td>
-      <td style="color:var(--gray-500)">${rmk}${svcNote}</td>
-      <td class="tamount">${fmtINR(net)}</td>
-      <td class="tamount" style="${isS?'color:var(--blue)':''}">${isS?fmtINR(gross):'—'}</td></tr>`;
-  }
-  html+='</tbody></table>';
-  document.getElementById('tContent').innerHTML=html;
+  for(const t of sorted){const pd=parseDate(t.date),k=mapKey(t.head)||'',net=parseFloat(t.amount)||0,isS=SAL_HEADS.has(t.head),gross=isS?Math.round(net/0.9):net;let sv='';if(isS&&pd){const sd=extractSvc(t.narration,pd);if(sd&&(sd.getFullYear()!==pd.getFullYear()||sd.getMonth()!==pd.getMonth()))sv=`<span class="svcb">svc: ${MNAMES[sd.getMonth()].slice(0,3).toUpperCase()} ${sd.getFullYear()}</span>`;}html+=`<tr><td class="tdate">${fmtD(pd)}</td><td>${t.narration||'—'}</td><td><span class="hb ${hbCls(k)}">${k?(HEADS.find(h=>h.key===k)?.label||t.head):t.head}</span></td><td style="color:var(--gray-500)">${t.remark||'—'}${sv}</td><td class="tamt">${fmtINR(net)}</td><td class="tamt" style="${isS?'color:var(--blue)':''}">${isS?fmtINR(gross):'—'}</td></tr>`;}
+  html+='</tbody></table>';document.getElementById('tContent').innerHTML=html;
 }
-
-async function loadData(){
-  try{
-    const r=await fetch(GAS);
-    const j=await r.json();
-    allTxns=j.transactions||j.data||[];
-    const now=new Date();
-    document.getElementById('upd').textContent='Updated '+now.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
-    renderYrBtns();renderDash();
-  }catch(e){
-    document.getElementById('tContent').innerHTML=`<div class="errbox">Failed to load: ${e.message}</div>`;
-  }
-}
+async function loadData(){try{const r=await fetch(GAS);const j=await r.json();allTxns=j.transactions||j.data||[];document.getElementById('upd').textContent='Updated '+new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});renderOverview();renderYrBtns();renderDash();}catch(e){document.getElementById('tContent').innerHTML=`<div class="errbox">Failed to load: ${e.message}</div>`;}}
 switchYr('Y1');loadData();
 </script>
 </body>
